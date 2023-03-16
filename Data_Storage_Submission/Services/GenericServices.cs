@@ -17,12 +17,7 @@ internal abstract class GenericServices<T> where T : class
     {
         var item = await _context.Set<T>().FirstOrDefaultAsync(predicate);
 
-        if (item != null) 
-        {
-            return item;
-        }
-
-        return null!;
+        return item ?? null!;
     }
 
     public virtual async Task<T> SaveAsync(T entity)
