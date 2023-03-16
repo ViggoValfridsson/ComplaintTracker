@@ -36,7 +36,7 @@ var oldDepartment = new DepartmentEntity()
 //new department
 var newDepartment = new DepartmentEntity()
 {
-    Name = "TestDepartment2"
+    Name = "TestDepartment3"
 };
 
 await departmentService.SaveAsync(newDepartment);

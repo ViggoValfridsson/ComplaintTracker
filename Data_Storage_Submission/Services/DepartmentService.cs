@@ -28,9 +28,7 @@ internal class DepartmentService : GenericServices<DepartmentEntity>
 
         if (item == null)
         {
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            return await base.SaveAsync(entity);
         }
 
         throw new DbUpdateException("Item already exists in database.");
