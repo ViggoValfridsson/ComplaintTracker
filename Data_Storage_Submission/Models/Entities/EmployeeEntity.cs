@@ -13,4 +13,5 @@ internal class EmployeeEntity
     public string LastName { get; set; } = null!;
     public int DepartmentId { get; set; }
     public DepartmentEntity Department { get; set; } = null!;
+    public ICollection<CommentEntity> Comments { get; set; } = new HashSet<CommentEntity>();
 }
