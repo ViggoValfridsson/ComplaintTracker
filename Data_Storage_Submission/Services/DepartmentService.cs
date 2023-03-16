@@ -21,4 +21,18 @@ internal class DepartmentService : GenericServices<DepartmentEntity>
 
         return null!;
     }
+
+    public override async Task<DepartmentEntity> SaveAsync(DepartmentEntity entity)
+    {
+        var item = await GetAsync(x => x.Name == entity.Name);
+
+        if (item == null)
+        {
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        throw new DbUpdateException("Item already exists in database.");
+    }
 }
