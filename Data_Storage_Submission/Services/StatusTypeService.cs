@@ -18,8 +18,13 @@ internal class StatusTypeService : GenericServices<StatusTypeEntity>
         return item ?? null!;
     }
 
-    public override Task<StatusTypeEntity> SaveAsync(StatusTypeEntity entity)
+    public override async Task<StatusTypeEntity> SaveAsync(StatusTypeEntity entity)
     {
-        return base.SaveAsync(entity);
+        var item = await GetAsync(x => x.StatusName == entity.StatusName);
+
+        if (item == null)
+            return await base.SaveAsync(entity);
+
+        throw new ArgumentException("StatusType already exists in database.");
     }
 }

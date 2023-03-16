@@ -55,10 +55,21 @@ using Data_Storage_Submission.Services;
 #endregion 
 
 #region StatusType GetAsync Test
-var statusTypeService = new StatusTypeService();
+//var statusTypeService = new StatusTypeService();
 
-var result = await statusTypeService.GetAsync(x => x.Id == 4);
+//var result = await statusTypeService.GetAsync(x => x.Id == 4);
 
-Console.WriteLine(result.StatusName);
+//Console.WriteLine(result.StatusName);
+#endregion
+
+#region StatusType SaveAsync Test
+//var statusTypeService = new StatusTypeService();
+
+//var statusType = new StatusTypeEntity()
+//{
+//    StatusName = "Test Status",
+//};
+
+//await statusTypeService.SaveAsync(statusType);
 #endregion
 
