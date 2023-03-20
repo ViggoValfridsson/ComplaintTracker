@@ -4,7 +4,7 @@ namespace Data_Storage_Submission.Models.Entities;
 
 internal class ComplaintEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime SubmittedAt { get; set; } = DateTime.Now;
 
     [Column(TypeName = "nvarchar(100)")]

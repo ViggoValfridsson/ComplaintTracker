@@ -4,7 +4,7 @@ namespace Data_Storage_Submission.Models.Entities;
 
 internal class EmployeeEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [Column(TypeName = "nvarchar(100)")]
     public string FirstName { get; set; } = null!;
