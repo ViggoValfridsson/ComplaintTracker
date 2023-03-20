@@ -5,7 +5,7 @@ namespace Data_Storage_Submission.Models.Entities
     internal class CommentEntity
     {
         public int Id { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Column(TypeName = "nvarchar(100)")]
         public string Title { get; set; } = null!;

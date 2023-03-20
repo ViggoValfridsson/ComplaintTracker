@@ -8,10 +8,10 @@ namespace Data_Storage_Submission.Services;
 internal class EmployeeService : GenericServices<EmployeeEntity>
 {
     private readonly DataContext _context = new();
+
     public override async Task<IEnumerable<EmployeeEntity>> GetAllAsync()
     {
         return await _context.Employees
-            .Include(x => x.Comments)
             .Include(x => x.Department)
             .ToListAsync();
     }
@@ -28,7 +28,7 @@ internal class EmployeeService : GenericServices<EmployeeEntity>
 
     public override async Task<EmployeeEntity> SaveAsync(EmployeeEntity entity)
     {
-        var item = await _context.Employees.FirstOrDefaultAsync(x => x.FirstName == entity.FirstName && x.LastName == entity.LastName && x.DepartmentId == entity.DepartmentId);
+        var item = await GetAsync(x => x.FirstName == entity.FirstName && x.LastName == entity.LastName && x.DepartmentId == entity.DepartmentId);
 
         if (item == null)
             return await base.SaveAsync(entity);

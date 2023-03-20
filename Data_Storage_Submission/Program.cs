@@ -1,8 +1,6 @@
 ﻿using Data_Storage_Submission.Models.Entities;
 using Data_Storage_Submission.Services;
 
-Console.WriteLine("Hello World!");
-
 #region Generic GetAllAsync Test
 //var departmentService = new DepartmentService();
 
@@ -85,10 +83,6 @@ Console.WriteLine("Hello World!");
 //{
 //    Console.WriteLine(employee.FirstName);
 //    Console.WriteLine(employee.Department.Name);
-//    foreach (var comment in employee.Comments)
-//    {
-//        Console.WriteLine(comment.Title);
-//    }
 //    Console.WriteLine();
 //}
 
@@ -103,6 +97,92 @@ Console.WriteLine("Hello World!");
 //    Console.WriteLine(comment.Title);
 //}
 
+////SaveAsync
+//var employeeService = new EmployeeService();
+
+//var employee = new EmployeeEntity
+//{
+//    Id = Guid.Parse("c2193e33-db32-424a-9a9c-fb4e54d836cd"),
+//    FirstName = "SaveMethodTest",
+//    LastName = "Test",
+//    DepartmentId = 1
+//};
+
+//var saved = await employeeService.SaveAsync(employee);
+
+//Console.WriteLine(saved.FirstName);
+
+#endregion
+
+#region Customer test
+//var customerService = new CustomerService();
+
+////Get All
+//var customers = await customerService.GetAllAsync();
+//foreach (var customer in customers)
+//{
+//    Console.WriteLine(customer.FirstName + " " + customer.LastName);
+//    Console.WriteLine(customer.Address.Street + " " + customer.Address.PostalCode +" " + customer.Address.City);
+//}
+
+////GetAsync
+//var customer = await customerService.GetAsync(x => x.Id == Guid.Parse("68352aec-af93-4c59-a32c-b25ecc68c52a"));
+
+//Console.WriteLine(customer.FirstName + " " + customer.Id);
+//Console.WriteLine(customer.Address.Street + " " + customer.Address.PostalCode + " " + customer.Address.City);
+//foreach (var complaint in customer.Complaints)
+//{
+//    Console.WriteLine("complaint: " + complaint.Title);
+//}
+
+////SaveAsync
+//var customer = new CustomerEntity
+//{
+//    FirstName = "MethodTest2",
+//    LastName = "Test3",
+//    Email = "email@domain.com",
+//    PhoneNumber = "1234567890",
+//    Id = Guid.NewGuid(),
+//    AddressId = 1
+//};
+
+//var created = await customerService.SaveAsync(customer);
+//Console.WriteLine(created.FirstName);
+
+#endregion
+
+#region Comment test
+var commentService = new CommentService();
+
+////GetAllAsync
+//var comments = await commentService.GetAllAsync();
+
+//foreach(var comment in comments)
+//{
+//    Console.WriteLine(comment.Title);
+//    Console.WriteLine(comment.Employee.FirstName);
+//    Console.WriteLine(comment.Complaint.Title);
+//    Console.WriteLine();
+//}
+
+////GetAsync
+//var comment = await commentService.GetAsync(x => x.Id == 2);
+//Console.WriteLine(comment.Title);
+//Console.WriteLine(comment.Employee.FirstName);
+//Console.WriteLine(comment.Complaint.Title);
+
+////SaveAsync
+//var comment = new CommentEntity
+//{
+//    Title = "methodTest",
+//    Description = "desc",
+//    EmployeeId = Guid.Parse("d42def70-5b22-4304-9e48-889b6e2a434"),
+//    ComplaintId = Guid.Parse("258744f0-f99e-45d2-bbbd-a70bafcea550"),
+//    CreatedAt = DateTime.Now,
+//};
+
+//var saved = await commentService.SaveAsync(comment);
+//Console.WriteLine(saved.Title);
 
 
 #endregion
