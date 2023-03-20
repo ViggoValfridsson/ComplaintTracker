@@ -10,7 +10,7 @@ internal class DisplayTableService<T> where T : class
         PrintRows(data);
     }
 
-    public void CalculateColWidths(List<T> data)
+    private void CalculateColWidths(List<T> data)
     {
         foreach (var row in data)
         {
@@ -42,7 +42,7 @@ internal class DisplayTableService<T> where T : class
         }
     }
 
-    public void PrintHeaders(T row)
+    private void PrintHeaders(T row)
     {
         var properties = row!.GetType().GetProperties();
         var propList = new List<string>();
@@ -57,7 +57,7 @@ internal class DisplayTableService<T> where T : class
         PrintRow(propList);
     }
 
-    public void PrintRows(List<T> rows)
+    private void PrintRows(List<T> rows)
     {
         foreach (var row in rows)
         {
@@ -74,7 +74,7 @@ internal class DisplayTableService<T> where T : class
         }
     }
 
-    public void PrintRow(List<string> values)
+    private void PrintRow(List<string> values)
     {
         for (int i = 0; i < values.Count; i++)
         {
@@ -86,7 +86,7 @@ internal class DisplayTableService<T> where T : class
         PrintLine(values.Count);
     }
 
-    public void PrintLine(int colAmount)
+    private void PrintLine(int colAmount)
     {
         Console.Write("+");
         for (int i = 0; i < colAmount; i++)

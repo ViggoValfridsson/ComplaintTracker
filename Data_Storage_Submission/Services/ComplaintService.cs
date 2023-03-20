@@ -23,6 +23,9 @@ internal class ComplaintService : GenericServices<ComplaintEntity>
         var item = await _context.Complaints
             .Include(x => x.Customer)
             .Include(x => x.Product)
+            .Include(x => x.StatusType)
+            .Include(x => x.Comments)
+            .ThenInclude(x => x.Employee)
             .FirstOrDefaultAsync(predicate);
 
         return item ?? null!;

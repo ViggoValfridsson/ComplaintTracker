@@ -1,10 +1,15 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Query;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Storage_Submission.Services.Menus;
 
 internal class ComplaintsMenuService
 {
+    private readonly ComplaintService _complaintService = new();
+
     public async Task DisplayOptionsMenu()
     {
         bool isRunning = true;
@@ -26,6 +31,7 @@ internal class ComplaintsMenuService
                     await DisplayAllComplaints();
                     break;
                 case '2':
+                    await DisplaySpecificComplain();
                     break;
                 case '3':
                     break;
@@ -45,8 +51,7 @@ internal class ComplaintsMenuService
         Console.Clear();
         Console.WriteLine("Loading...");
 
-        var complaintsService = new ComplaintService();
-        var complaints = await complaintsService.GetAllAsync();
+        var complaints = await _complaintService.GetAllAsync();
 
         Console.Clear();
 
@@ -70,5 +75,89 @@ internal class ComplaintsMenuService
 
         Console.WriteLine("\nPress enter to go back:");
         Console.ReadLine();
+    }
+
+    private async Task DisplaySpecificComplain()
+    {
+        bool isRunning = true;
+
+        while (isRunning)
+        {
+            Console.Clear();
+            Console.WriteLine("Please select an option: \n");
+            Console.WriteLine("1. Get By Id");
+            Console.WriteLine("2. Get By Name");
+            Console.WriteLine("3. Go Back\n");
+
+            var input = Console.ReadKey(true);
+
+            switch (input.KeyChar)
+            {
+                case '1':
+                    await GetComplaintById();
+                    break;
+                case '2':
+                    await GetComplaintByName();
+                    Console.WriteLine("Enter the name of the complaint you wish to view.");
+                    break;
+                case '3':
+                    isRunning = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid option, press enter to try again.");
+                    Console.ReadLine();
+                    break;
+            }
+        }
+    }
+    private async Task GetComplaintById()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the Id of the complaint you wish to view.");
+        var id = Console.ReadLine();
+        ComplaintEntity complaint = null!;
+
+        try
+        {
+            complaint = await _complaintService.GetAsync(x => x.Id == Guid.Parse(id!));
+            PrintDetailedComplaint(complaint);
+        }
+        catch (InvalidOperationException)
+        {
+            Console.WriteLine("Invalid Id format, please try again. Press enter to try again.");
+            Console.ReadLine();
+            return;
+        }
+
+        if (complaint == null)
+        {
+            Console.WriteLine("Could not find complaint, please make sure that you entered a valid Id.  Press enter to try again.");
+        }
+
+        Console.ReadLine();
+    }
+    private void PrintDetailedComplaint(ComplaintEntity complaint)
+    {
+        Console.Clear();
+
+        Console.WriteLine($"Id: {complaint.Id}");
+        Console.WriteLine($"Title: {complaint.Title}");
+        Console.WriteLine($"Description: {complaint.Description}");
+        Console.WriteLine($"Product: {complaint.Product.Name}");
+        Console.WriteLine($"Customer: {complaint.Customer.FirstName} {complaint.Customer.LastName}");
+        Console.WriteLine($"Status: {complaint.StatusType.StatusName}");
+        Console.WriteLine($"Submitted at: {complaint.SubmittedAt}");
+        Console.WriteLine("\nComments: \n");
+
+        foreach (var comment in complaint.Comments)
+        {
+            Console.WriteLine($"Id: {comment.Id}");
+            Console.WriteLine($"Title: {comment.Title}");
+            Console.WriteLine($"Descripion: {comment.Description}");
+            Console.WriteLine($"Posted at: {comment.CreatedAt}");
+            Console.WriteLine($"Created by: {comment.Employee.FirstName} {comment.Employee.LastName}\n");
+        }
+
+        Console.WriteLine("Press enter to go back.");
     }
 }
