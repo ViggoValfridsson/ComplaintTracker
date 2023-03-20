@@ -1,5 +1,7 @@
 ﻿using Data_Storage_Submission.Models.Entities;
 using Data_Storage_Submission.Services;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #region Generic GetAllAsync Test
 //var departmentService = new DepartmentService();
@@ -152,7 +154,7 @@ using Data_Storage_Submission.Services;
 #endregion
 
 #region Comment test
-var commentService = new CommentService();
+//var commentService = new CommentService();
 
 ////GetAllAsync
 //var comments = await commentService.GetAllAsync();
@@ -184,5 +186,42 @@ var commentService = new CommentService();
 //var saved = await commentService.SaveAsync(comment);
 //Console.WriteLine(saved.Title);
 
+#endregion
+
+#region complaint test
+
+//var complaintService = new ComplaintService();
+
+////GetAllAsync
+//var complaints = await complaintService.GetAllAsync();
+
+//foreach (var complaint in complaints)
+//{
+//    Console.WriteLine(complaint.Title);
+//    Console.WriteLine(complaint.Customer.FirstName);
+//    Console.WriteLine(complaint.Product.Name);
+//    Console.WriteLine();
+//}
+
+
+////GetAsync
+//var complaint = await complaintService.GetAsync(x => x.Id == Guid.Parse("258744f0-f99e-45d2-bbbd-a70bafcea550"));
+//Console.WriteLine(complaint.Title);
+//Console.WriteLine(complaint.Customer.FirstName);
+//Console.WriteLine(complaint.Product.Name);
+
+////SaveAsync
+//var complaint = new ComplaintEntity
+//{
+//    Id = Guid.NewGuid(),
+//    Title = "Method",
+//    Description = "Description",
+//    CustomerId = Guid.Parse("68352aec-af93-4c59-a32c-b25ecc68c52a"),
+//    ProductId = 1,
+//    StatusTypeId = 1
+//};
+
+//var saved = await complaintService.SaveAsync(complaint);
+//Console.WriteLine(saved.Title);
 
 #endregion
