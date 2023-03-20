@@ -13,7 +13,7 @@ namespace Data_Storage_Submission.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20230316100920_initial-migration")]
-    partial class initialmigration
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
