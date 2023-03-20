@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Data_Storage_Submission.Services; 
+namespace Data_Storage_Submission.Services;
 
 internal abstract class GenericServices<T> where T : class
 {
-    private readonly DataContext _context = new DataContext();
+    private readonly DataContext _context = new();
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
@@ -24,7 +24,7 @@ internal abstract class GenericServices<T> where T : class
     {
         await _context.AddAsync(entity);
         await _context.SaveChangesAsync();
-        
+
         return entity;
     }
 }

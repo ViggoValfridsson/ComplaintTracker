@@ -7,7 +7,7 @@ namespace Data_Storage_Submission.Services;
 
 internal class StatusTypeService : GenericServices<StatusTypeEntity>
 {
-    private readonly DataContext _context = new DataContext();
+    private readonly DataContext _context = new();
 
     public override async Task<StatusTypeEntity> GetAsync(Expression<Func<StatusTypeEntity, bool>> predicate)
     {

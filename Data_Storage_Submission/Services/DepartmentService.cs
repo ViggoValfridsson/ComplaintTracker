@@ -7,7 +7,7 @@ namespace Data_Storage_Submission.Services;
 
 internal class DepartmentService : GenericServices<DepartmentEntity>
 {
-    private readonly DataContext _context = new DataContext();
+    private readonly DataContext _context = new();
 
     public override async Task<DepartmentEntity> GetAsync(Expression<Func<DepartmentEntity, bool>> predicate)
     {

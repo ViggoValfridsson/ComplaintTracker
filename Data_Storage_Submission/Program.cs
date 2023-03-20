@@ -1,6 +1,8 @@
 ﻿using Data_Storage_Submission.Models.Entities;
 using Data_Storage_Submission.Services;
 
+Console.WriteLine("Hello World!");
+
 #region Generic GetAllAsync Test
 //var departmentService = new DepartmentService();
 
@@ -21,7 +23,7 @@ using Data_Storage_Submission.Services;
 //{
 //    Console.WriteLine(employee.FirstName + " " + employee.LastName);
 //}
-#endregion 
+#endregion
 
 #region Department SaveAsync Test
 //var departmentService = new DepartmentService();
@@ -39,7 +41,7 @@ using Data_Storage_Submission.Services;
 //};
 
 //await departmentService.SaveAsync(newDepartment);
-#endregion 
+#endregion
 
 #region Address SaveAsync Test
 //var addressService = new AddressService();
@@ -52,7 +54,7 @@ using Data_Storage_Submission.Services;
 //};
 
 //await addressService.SaveAsync(address);
-#endregion 
+#endregion
 
 #region StatusType GetAsync Test
 //var statusTypeService = new StatusTypeService();
@@ -73,3 +75,34 @@ using Data_Storage_Submission.Services;
 //await statusTypeService.SaveAsync(statusType);
 #endregion
 
+#region Employee tests
+////get all
+//var employeeService = new EmployeeService();
+
+//var employees = await employeeService.GetAllAsync();
+
+//foreach (var employee in employees)
+//{
+//    Console.WriteLine(employee.FirstName);
+//    Console.WriteLine(employee.Department.Name);
+//    foreach (var comment in employee.Comments)
+//    {
+//        Console.WriteLine(comment.Title);
+//    }
+//    Console.WriteLine();
+//}
+
+////GetAsync
+//var employeeService = new EmployeeService();
+//var employee = await employeeService.GetAsync(x => x.Id == Guid.Parse("7c12cec7-0d27-4063-98fc-e64e51194ddf"));
+
+//Console.WriteLine(employee.FirstName);
+//Console.WriteLine(employee.Department.Name);
+//foreach (var comment in employee.Comments)
+//{
+//    Console.WriteLine(comment.Title);
+//}
+
+
+
+#endregion
