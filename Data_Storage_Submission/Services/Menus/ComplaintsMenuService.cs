@@ -68,6 +68,7 @@ internal class ComplaintsMenuService
             displayTableService.DisplayTable(complaintSummaries);
         }
 
+        Console.WriteLine("\nPress enter to go back:");
         Console.ReadLine();
     }
 }

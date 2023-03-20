@@ -11,15 +11,15 @@ internal class ComplaintSummaryModel
         Id = complaintEntity.Id;
         SubmittedAt = complaintEntity.SubmittedAt;
         Title = complaintEntity.Title;
-        ProductId = complaintEntity.ProductId;
-        StatusTypeId = complaintEntity.StatusTypeId;
+        Product = complaintEntity.Product.Name;
+        Status = complaintEntity.StatusType.StatusName;
         UserFullName = $"{complaintEntity.Customer.FirstName} {complaintEntity.Customer.LastName}";
     }
 
     public Guid Id { get; set; }
     public DateTime SubmittedAt { get; set; } 
     public string Title { get; set; } = null!;
-    public int ProductId { get; set; }
-    public int StatusTypeId { get; set; }
+    public string Product { get; set; } = null!;
+    public string Status { get; set; } = null!;
     public string UserFullName { get; set; } = null!;
 }

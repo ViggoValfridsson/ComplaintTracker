@@ -13,6 +13,7 @@ internal class ComplaintService : GenericServices<ComplaintEntity>
     {
         return await _context.Complaints
             .Include(x => x.Customer)
+            .Include(x => x.StatusType)
             .Include(x => x.Product)
             .ToListAsync();
     }
