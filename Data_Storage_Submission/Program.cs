@@ -1,7 +1,6 @@
 ﻿using Data_Storage_Submission.Models.Entities;
 using Data_Storage_Submission.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
+using Data_Storage_Submission.Services.Menus;
 
 #region Generic GetAllAsync Test
 //var departmentService = new DepartmentService();
@@ -225,3 +224,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 //Console.WriteLine(saved.Title);
 
 #endregion
+
+var mainMenu = new MainMenuService();
+await mainMenu.DisplayMainMenu();

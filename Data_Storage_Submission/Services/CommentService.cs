@@ -35,4 +35,12 @@ internal class CommentService : GenericServices<CommentEntity>
 
         throw new ArgumentException("Comment already exists in database.");
     }
+
+    public async Task DeleteAsync(int commentId)
+    {
+        var item = await GetAsync(x => x.Id == commentId) ?? throw new ArgumentException("Could not find comment.");
+
+        _context.Remove(item);
+        await _context.SaveChangesAsync();
+    }
 }
