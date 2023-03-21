@@ -36,9 +36,19 @@ internal class ComplaintService : GenericServices<ComplaintEntity>
     {
         var item = await GetAsync(x => x.CustomerId == entity.CustomerId && x.ProductId == entity.ProductId && x.Title == entity.Title && x.Description == entity.Description);
 
-        if (item == null) 
+        if (item == null)
             return await base.SaveAsync(entity);
 
         throw new ArgumentException("Complaint already exists in database.");
+    }
+
+    public async Task<ComplaintEntity> ChangeStatusAsync(Guid complaintId, int statusTypeId)
+    {
+        var item = await GetAsync(x => x.Id == complaintId) ?? throw new ArgumentException("Could not find complaint.");
+
+        item.StatusTypeId = statusTypeId;
+        await _context.SaveChangesAsync();
+
+        return item;
     }
 }

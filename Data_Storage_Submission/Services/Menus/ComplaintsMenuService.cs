@@ -20,8 +20,9 @@ internal class ComplaintsMenuService
             Console.WriteLine("Please select an option: \n");
             Console.WriteLine("1. View All Complaints");
             Console.WriteLine("2. View Specific Complaint");
-            Console.WriteLine("3. Submit Complaint");
-            Console.WriteLine("4. Go Back\n");
+            Console.WriteLine("3. Update Complaint Status");
+            Console.WriteLine("4. Submit Complaint");
+            Console.WriteLine("5. Go Back\n");
 
             var input = Console.ReadKey(true);
 
@@ -34,9 +35,12 @@ internal class ComplaintsMenuService
                     await DisplaySpecificComplain();
                     break;
                 case '3':
-                    await CreateComplaint();
+                    await UpdateComplaintStatus();
                     break;
                 case '4':
+                    await CreateComplaint();
+                    break;
+                case '5':
                     isRunning = false;
                     break;
                 default:
@@ -186,6 +190,72 @@ internal class ComplaintsMenuService
 
             Console.WriteLine("\nPress enter to go back.");
         }
+    }
+
+    private async Task UpdateComplaintStatus()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the id of the complaint you wish to update.");
+        Guid complaintId;
+        int statusTypeId;
+
+        try
+        {
+            complaintId = Guid.Parse(Console.ReadLine()!);
+        }
+        catch
+        {
+            Console.WriteLine("Not a valid complaint id, press enter to try again.");
+            Console.ReadLine();
+            return;
+        }
+
+        Console.Clear();
+
+        Console.WriteLine("Pick the new status type");
+        Console.WriteLine("1. Not started");
+        Console.WriteLine("2. Under investigation");
+        Console.WriteLine("3. Closed\n");
+
+        var input = Console.ReadKey(true);
+
+        switch (input.KeyChar)
+        {
+            case '1':
+                statusTypeId = 1;
+                break;
+            case '2':
+                statusTypeId = 2;
+                break;
+            case '3':
+                statusTypeId = 3;
+                break;
+            default:
+                Console.Clear();
+                Console.WriteLine("Not a valid status type, press enter to try again.");
+                Console.ReadLine();
+                return;
+        }
+
+        Console.Clear();
+        Console.WriteLine("Loading...");
+
+        try
+        {
+            await _complaintService.ChangeStatusAsync(complaintId, statusTypeId);
+            var complaint = await _complaintService.GetAsync(x => x.Id == complaintId);
+            PrintDetailedComplaint(complaint);
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message + " Press enter to try again.");
+        }
+        //catch
+        //{
+        //    Console.WriteLine("Something went wrong, press enter to try again.");
+        //}
+
+        Console.ReadLine();
     }
 
     private async Task CreateComplaint()

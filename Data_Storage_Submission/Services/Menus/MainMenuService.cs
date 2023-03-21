@@ -13,11 +13,11 @@ internal class MainMenuService
             Console.WriteLine("1. Complaints");
             Console.WriteLine("2. Customers");
             Console.WriteLine("3. Comments");
-            Console.WriteLine("4. Address");
-            Console.WriteLine("5. Departments");
+            Console.WriteLine("4. Address"); //Behövs inte en egen meny för. Skapa addressen från customer
+            Console.WriteLine("5. Departments"); //Behövs inte en meny för
             Console.WriteLine("6. Employees");
             Console.WriteLine("7. Products");
-            Console.WriteLine("8. Status Types");
+            Console.WriteLine("8. Status Types");  //Behövs inte en meny för
             Console.WriteLine("9. Quit\n");
 
             var input = Console.ReadKey(true);
