@@ -165,17 +165,91 @@ internal class ComplaintsMenuService
             Console.WriteLine($"Customer: {complaint.Customer.FirstName} {complaint.Customer.LastName}");
             Console.WriteLine($"Status: {complaint.StatusType.StatusName}");
             Console.WriteLine($"Submitted at: {complaint.SubmittedAt}");
-            Console.WriteLine("\nComments:");
 
-            foreach (var comment in complaint.Comments)
+            if (complaint.Comments.Count > 0)
             {
-                Console.WriteLine($"Id: {comment.Id}");
-                Console.WriteLine($"Title: {comment.Title}");
-                Console.WriteLine($"Descripion: {comment.Description}");
-                Console.WriteLine($"Posted at: {comment.CreatedAt}");
-                Console.WriteLine($"Created by: {comment.Employee.FirstName} {comment.Employee.LastName}\n");
+                Console.WriteLine("\nComments:");
+
+                foreach (var comment in complaint.Comments)
+                {
+                    Console.WriteLine($"Id: {comment.Id}");
+                    Console.WriteLine($"Title: {comment.Title}");
+                    Console.WriteLine($"Descripion: {comment.Description}");
+                    Console.WriteLine($"Posted at: {comment.CreatedAt}");
+                    Console.WriteLine($"Created by: {comment.Employee.FirstName} {comment.Employee.LastName}\n");
+                }
             }
+            else
+            {
+                Console.WriteLine("\nThis complaint has no comments yet.");
+            }
+
             Console.WriteLine("Press enter to go back.");
+        }
+    }
+
+    private async Task CreateComplaint()
+    {
+        while (true)
+        {
+            var complaint = new ComplaintEntity();
+            Console.Clear();
+            Console.WriteLine("Please fill in the form to create a complaint.");
+            Console.WriteLine("Title: ");
+            complaint.Title = Console.ReadLine()!;
+            Console.WriteLine("Description: ");
+            complaint.Description = Console.ReadLine()!;
+
+            Console.WriteLine("Product Id: ");
+            try
+            {
+                complaint.ProductId = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("Not a valid product id, press enter to try again.");
+                Console.ReadLine();
+                continue;
+            }
+
+            Console.WriteLine("Customer Id: ");
+            try
+            {
+                complaint.CustomerId = Guid.Parse(Console.ReadLine()!);
+            }
+            catch
+            {
+                Console.WriteLine("Not a valid customer id, press enter to try again.");
+                Console.ReadLine();
+                continue;
+            }
+
+            complaint.StatusTypeId = 1;
+
+            Console.Clear();
+
+            try
+            {
+                Console.WriteLine("Loading...");
+                complaint = await _complaintService.SaveAsync(complaint);
+                var detailedComplaint = await _complaintService.GetAsync(x => x.Id == complaint.Id);
+                Console.WriteLine("Successfully added complaint: ");
+                PrintDetailedComplaint(detailedComplaint);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.Clear();
+                Console.WriteLine(ex.Message + "\n\nPress enter to go back.");
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Something went wrong when trying to save your complaint. Make sure that you entered valid information and try again.");
+                Console.WriteLine("\nPress enter to go back.");
+            }
+
+            Console.ReadLine();
+            break;
         }
     }
 }
