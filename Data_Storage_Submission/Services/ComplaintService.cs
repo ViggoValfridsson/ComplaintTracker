@@ -51,4 +51,12 @@ internal class ComplaintService : GenericServices<ComplaintEntity>
 
         return item;
     }
+
+    public async Task DeleteAsync(Guid complaintId)
+    {
+        var item = await GetAsync(x => x.Id == complaintId) ?? throw new ArgumentException("Could not find complaint.");
+
+        _context.Remove(item);
+        await _context.SaveChangesAsync();
+    }
 }

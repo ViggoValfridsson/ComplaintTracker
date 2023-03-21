@@ -22,7 +22,8 @@ internal class ComplaintsMenuService
             Console.WriteLine("2. View Specific Complaint");
             Console.WriteLine("3. Update Complaint Status");
             Console.WriteLine("4. Submit Complaint");
-            Console.WriteLine("5. Go Back\n");
+            Console.WriteLine("5. Delete Complaint");
+            Console.WriteLine("6. Go Back\n");
 
             var input = Console.ReadKey(true);
 
@@ -41,6 +42,9 @@ internal class ComplaintsMenuService
                     await CreateComplaint();
                     break;
                 case '5':
+                    await DeleteComplaint();
+                    break;
+                case '6':
                     isRunning = false;
                     break;
                 default:
@@ -248,12 +252,61 @@ internal class ComplaintsMenuService
         }
         catch (ArgumentException ex)
         {
+            Console.Clear();
             Console.WriteLine(ex.Message + " Press enter to try again.");
         }
-        //catch
-        //{
-        //    Console.WriteLine("Something went wrong, press enter to try again.");
-        //}
+        catch
+        {
+            Console.Clear();
+            Console.WriteLine("Something went wrong, press enter to try again.");
+        }
+
+        Console.ReadLine();
+    }
+
+    private async Task DeleteComplaint()
+    {
+        Guid complaintId;
+        Console.Clear();
+        Console.WriteLine("Enter the id of the complaint you wish to delete or press enter to go back.");
+
+        var input = Console.ReadLine();
+
+        if (String.IsNullOrWhiteSpace(input))
+        {
+            return;
+        }
+
+        try
+        {
+            complaintId = Guid.Parse(input);
+        }
+        catch
+        {
+            Console.WriteLine("Not a valid complaint id, press enter to try again.");
+            Console.ReadLine();
+            return;
+        }
+
+        Console.Clear();
+        Console.WriteLine("Loading...");
+
+        try
+        {
+            await _complaintService.DeleteAsync(complaintId);
+            Console.Clear();
+            Console.WriteLine("Succesfully deleted complaint. Press enter to return.");
+        }
+        catch (ArgumentException ex )
+        {
+            Console.Clear();
+            Console.WriteLine(ex.Message + " Press enter to try again.");
+        }
+        catch
+        {
+            Console.Clear();
+            Console.WriteLine("Something went wrong, press enter to try again.");
+        }
 
         Console.ReadLine();
     }
