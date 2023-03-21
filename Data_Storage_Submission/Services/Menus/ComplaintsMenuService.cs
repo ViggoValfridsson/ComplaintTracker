@@ -34,6 +34,7 @@ internal class ComplaintsMenuService
                     await DisplaySpecificComplain();
                     break;
                 case '3':
+                    await CreateComplaint();
                     break;
                 case '4':
                     isRunning = false;
@@ -86,7 +87,7 @@ internal class ComplaintsMenuService
             Console.Clear();
             Console.WriteLine("Please select an option: \n");
             Console.WriteLine("1. Get By Id");
-            Console.WriteLine("2. Get By Name");
+            Console.WriteLine("2. Get By Title");
             Console.WriteLine("3. Go Back\n");
 
             var input = Console.ReadKey(true);
@@ -97,8 +98,7 @@ internal class ComplaintsMenuService
                     await GetComplaintById();
                     break;
                 case '2':
-                    await GetComplaintByName();
-                    Console.WriteLine("Enter the name of the complaint you wish to view.");
+                    await GetComplaintByTitle();
                     break;
                 case '3':
                     isRunning = false;
@@ -110,6 +110,7 @@ internal class ComplaintsMenuService
             }
         }
     }
+
     private async Task GetComplaintById()
     {
         Console.Clear();
@@ -120,7 +121,6 @@ internal class ComplaintsMenuService
         try
         {
             complaint = await _complaintService.GetAsync(x => x.Id == Guid.Parse(id!));
-            PrintDetailedComplaint(complaint);
         }
         catch (InvalidOperationException)
         {
@@ -129,35 +129,53 @@ internal class ComplaintsMenuService
             return;
         }
 
-        if (complaint == null)
-        {
-            Console.WriteLine("Could not find complaint, please make sure that you entered a valid Id.  Press enter to try again.");
-        }
+        PrintDetailedComplaint(complaint);
 
         Console.ReadLine();
     }
+
+    private async Task GetComplaintByTitle()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the Title of the complaint you wish to view.");
+        var title = Console.ReadLine();
+
+        var complaint = await _complaintService.GetAsync(x => x.Title == title);
+
+        PrintDetailedComplaint(complaint);
+
+        Console.ReadLine();
+    }
+
     private void PrintDetailedComplaint(ComplaintEntity complaint)
     {
         Console.Clear();
 
-        Console.WriteLine($"Id: {complaint.Id}");
-        Console.WriteLine($"Title: {complaint.Title}");
-        Console.WriteLine($"Description: {complaint.Description}");
-        Console.WriteLine($"Product: {complaint.Product.Name}");
-        Console.WriteLine($"Customer: {complaint.Customer.FirstName} {complaint.Customer.LastName}");
-        Console.WriteLine($"Status: {complaint.StatusType.StatusName}");
-        Console.WriteLine($"Submitted at: {complaint.SubmittedAt}");
-        Console.WriteLine("\nComments: \n");
-
-        foreach (var comment in complaint.Comments)
+        if (complaint == null)
         {
-            Console.WriteLine($"Id: {comment.Id}");
-            Console.WriteLine($"Title: {comment.Title}");
-            Console.WriteLine($"Descripion: {comment.Description}");
-            Console.WriteLine($"Posted at: {comment.CreatedAt}");
-            Console.WriteLine($"Created by: {comment.Employee.FirstName} {comment.Employee.LastName}\n");
+            Console.WriteLine("Could not find complaint, please make sure that you entered a valid Id/title.  Press enter to try again.");
         }
 
-        Console.WriteLine("Press enter to go back.");
+        else
+        {
+            Console.WriteLine($"Id: {complaint.Id}");
+            Console.WriteLine($"Title: {complaint.Title}");
+            Console.WriteLine($"Description: {complaint.Description}");
+            Console.WriteLine($"Product: {complaint.Product.Name}");
+            Console.WriteLine($"Customer: {complaint.Customer.FirstName} {complaint.Customer.LastName}");
+            Console.WriteLine($"Status: {complaint.StatusType.StatusName}");
+            Console.WriteLine($"Submitted at: {complaint.SubmittedAt}");
+            Console.WriteLine("\nComments:");
+
+            foreach (var comment in complaint.Comments)
+            {
+                Console.WriteLine($"Id: {comment.Id}");
+                Console.WriteLine($"Title: {comment.Title}");
+                Console.WriteLine($"Descripion: {comment.Description}");
+                Console.WriteLine($"Posted at: {comment.CreatedAt}");
+                Console.WriteLine($"Created by: {comment.Employee.FirstName} {comment.Employee.LastName}\n");
+            }
+            Console.WriteLine("Press enter to go back.");
+        }
     }
 }
