@@ -12,13 +12,7 @@ internal class MainMenuService
             Console.WriteLine("Please select an option:\n");
             Console.WriteLine("1. Complaints");
             Console.WriteLine("2. Comments");
-            Console.WriteLine("3. Customers");
-            Console.WriteLine("4. Address"); //Behövs inte en egen meny för. Skapa addressen från customer
-            Console.WriteLine("5. Departments"); //Behövs inte en meny för
-            Console.WriteLine("6. Employees");
-            Console.WriteLine("7. Products");
-            Console.WriteLine("8. Status Types");  //Behövs inte en meny för
-            Console.WriteLine("9. Quit\n");
+            Console.WriteLine("3. Quit\n");
 
             var input = Console.ReadKey(true);
 
@@ -33,18 +27,6 @@ internal class MainMenuService
                     await commentMenuService.DisplayOptionsMenu();
                     break;
                 case '3':
-                    break;
-                case '4':
-                    break;
-                case '5':
-                    break;
-                case '6':
-                    break;
-                case '7':
-                    break;
-                case '8':
-                    break;
-                case '9':
                     isRunning = false;
                     break;
                 default:
