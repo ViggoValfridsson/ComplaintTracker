@@ -11,8 +11,8 @@ internal class MainMenuService
             Console.Clear();
             Console.WriteLine("Please select an option:\n");
             Console.WriteLine("1. Complaints");
-            Console.WriteLine("2. Customers");
-            Console.WriteLine("3. Comments");
+            Console.WriteLine("2. Comments");
+            Console.WriteLine("3. Customers");
             Console.WriteLine("4. Address"); //Behövs inte en egen meny för. Skapa addressen från customer
             Console.WriteLine("5. Departments"); //Behövs inte en meny för
             Console.WriteLine("6. Employees");
@@ -29,6 +29,8 @@ internal class MainMenuService
                     await complaintMenuService.DisplayOptionsMenu();
                     break;
                 case '2':
+                    var commentMenuService = new CommentsMenuService();
+                    await commentMenuService.DisplayOptionsMenu();
                     break;
                 case '3':
                     break;

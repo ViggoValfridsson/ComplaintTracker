@@ -3,6 +3,7 @@ using Data_Storage_Submission.Models.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -126,17 +127,22 @@ internal class ComplaintsMenuService
         var id = Console.ReadLine();
         ComplaintEntity complaint = null!;
 
+        Console.Clear();
+        Console.WriteLine("Loading...");
+
         try
         {
             complaint = await _complaintService.GetAsync(x => x.Id == Guid.Parse(id!));
         }
         catch (InvalidOperationException)
         {
-            Console.WriteLine("Invalid Id format, please try again. Press enter to try again.");
+            Console.Clear();
+            Console.WriteLine("Invalid Id format. Press enter to try again.");
             Console.ReadLine();
             return;
         }
 
+        Console.Clear();
         PrintDetailedComplaint(complaint);
 
         Console.ReadLine();
@@ -148,8 +154,12 @@ internal class ComplaintsMenuService
         Console.WriteLine("Enter the Title of the complaint you wish to view.");
         var title = Console.ReadLine();
 
+        Console.Clear();
+        Console.WriteLine("Loading...");
+
         var complaint = await _complaintService.GetAsync(x => x.Title == title);
 
+        Console.Clear();
         PrintDetailedComplaint(complaint);
 
         Console.ReadLine();
@@ -157,13 +167,10 @@ internal class ComplaintsMenuService
 
     private void PrintDetailedComplaint(ComplaintEntity complaint)
     {
-        Console.Clear();
-
         if (complaint == null)
         {
             Console.WriteLine("Could not find complaint, please make sure that you entered a valid Id/title.  Press enter to try again.");
         }
-
         else
         {
             Console.WriteLine($"Id: {complaint.Id}");
@@ -248,6 +255,7 @@ internal class ComplaintsMenuService
         {
             await _complaintService.ChangeStatusAsync(complaintId, statusTypeId);
             var complaint = await _complaintService.GetAsync(x => x.Id == complaintId);
+            Console.Clear();
             PrintDetailedComplaint(complaint);
         }
         catch (ArgumentException ex)
@@ -297,7 +305,7 @@ internal class ComplaintsMenuService
             Console.Clear();
             Console.WriteLine("Succesfully deleted complaint. Press enter to return.");
         }
-        catch (ArgumentException ex )
+        catch (ArgumentException ex)
         {
             Console.Clear();
             Console.WriteLine(ex.Message + " Press enter to try again.");
@@ -354,7 +362,8 @@ internal class ComplaintsMenuService
                 Console.WriteLine("Loading...");
                 complaint = await _complaintService.SaveAsync(complaint);
                 var detailedComplaint = await _complaintService.GetAsync(x => x.Id == complaint.Id);
-                Console.WriteLine("Successfully added complaint: ");
+                Console.Clear();
+                Console.WriteLine("Successfully added complaint: \n");
                 PrintDetailedComplaint(detailedComplaint);
             }
             catch (ArgumentException ex)
