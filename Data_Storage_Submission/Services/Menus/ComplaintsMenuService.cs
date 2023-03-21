@@ -184,7 +184,7 @@ internal class ComplaintsMenuService
                 Console.WriteLine("\nThis complaint has no comments yet.");
             }
 
-            Console.WriteLine("Press enter to go back.");
+            Console.WriteLine("\nPress enter to go back.");
         }
     }
 
@@ -223,8 +223,6 @@ internal class ComplaintsMenuService
                 Console.ReadLine();
                 continue;
             }
-
-            complaint.StatusTypeId = 1;
 
             Console.Clear();
 
