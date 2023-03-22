@@ -1,44 +1,41 @@
 ﻿using Data_Storage_Submission.Models;
+using Data_Storage_Submission.Models.Entities;
 
 namespace Data_Storage_Submission.Services.Menus;
 
 internal class MainMenuService
 {
-    private readonly ComplaintService _complaintService = new();
-    
+    private readonly ComplaintsMenuService _complaintsMenuService = new();
+
     public async Task DisplayMainMenu()
     {
-        var isRunning = true;
+        bool inMainMenu = true;
 
-        while (isRunning)
+        while(inMainMenu)
         {
             Console.Clear();
-            Console.WriteLine("Loading...");
+            Console.WriteLine("Commands:\n");
+            Console.WriteLine("complaints".PadRight(25) + "View and modify complaints");
+            Console.WriteLine("exit".PadRight(25) + "Close application");
 
-            var complaints = await _complaintService.GetAllAsync();
+            var input = Console.ReadLine();
 
-            Console.Clear();
-
-            if (complaints.Count() <= 0)
+            switch (input!.ToLower())
             {
-                Console.WriteLine("No complaints found.");
+                case "complaints": 
+                    await _complaintsMenuService.DisplayComplaintsMenu();
+                    break;
+                case "exit":
+                    inMainMenu = false;
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Not a valid command.");
+                    Console.ReadLine();
+                    break;
             }
-            else
-            {
-                var displayTableService = new DisplayTableService<ComplaintSummaryModel>();
-                var complaintSummaries = new List<ComplaintSummaryModel>();
-
-                foreach (var complaint in complaints)
-                {
-                    var complaintSummary = new ComplaintSummaryModel(complaint);
-                    complaintSummaries.Add(complaintSummary);
-                }
-
-                displayTableService.DisplayTable(complaintSummaries);
-            }
-
-            Console.WriteLine("\nPress enter to go back:");
-            Console.ReadLine();
         }
     }
+
+
 }
