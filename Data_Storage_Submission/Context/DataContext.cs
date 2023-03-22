@@ -15,13 +15,15 @@ internal class DataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        string projectDirectory = @"C:\Users\viggo\source\repos\Inlämningar\Data_Storage_Submission\Data_Storage_Submission\Context";
+        string workingDirectory = Environment.CurrentDirectory;
+        string currentDirectory = Directory.GetParent(workingDirectory)!.Parent!.Parent!.FullName;
+        string dbDirectory = $"{currentDirectory}\\Context";
 
         SqlConnectionStringBuilder builder =
             new()
             {
                 ["Data Source"] = @"(LocalDB)\MSSQLLocalDB",
-                ["AttachDbFilename"] = @$"{projectDirectory}\submisson_db.mdf",
+                ["AttachDbFilename"] = @$"{dbDirectory}\submisson_db.mdf",
                 ["integrated Security"] = true,
                 ["Connect Timeout"] = 30
             };
