@@ -65,7 +65,7 @@ internal class ComplaintsMenuService
 
         Console.Clear();
 
-        if (complaints == null)
+        if (complaints.Count() <= 0)
         {
             Console.WriteLine("No complaints found.");
         }
