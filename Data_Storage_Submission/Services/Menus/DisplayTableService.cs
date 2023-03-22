@@ -2,7 +2,7 @@
 
 internal class DisplayTableService<T> where T : class
 {
-    private List<int> colWidths = new List<int>();
+    private List<int> colWidths = new List<int> ();
     public void DisplayTable(List<T> data)
     {
         CalculateColWidths(data);
@@ -40,33 +40,37 @@ internal class DisplayTableService<T> where T : class
                 }
             }
         }
+
+        colWidths.Insert(0, 3);
     }
 
     private void PrintHeaders(T row)
     {
         var properties = row!.GetType().GetProperties();
-        var propList = new List<string>();
-
-        PrintLine(properties.Length);
+        var propList = new List<string>
+        {
+            "#"
+        };
 
         foreach (var property in properties)
         {
             propList.Add(property.Name);
         }
+        PrintLine(propList.Count);
 
         PrintRow(propList);
     }
 
     private void PrintRows(List<T> rows)
     {
-        foreach (var row in rows)
+        for (int i =0; i<rows.Count; i++) 
         {
-            var propValues = new List<string>();
-            var properties = row!.GetType().GetProperties();
+            var propValues = new List<string>() { (i + 1).ToString() };
+            var properties = rows[i].GetType().GetProperties();
 
             foreach (var property in properties)
             {
-                var propValue = (property.GetValue(row) ?? "").ToString();
+                var propValue = (property.GetValue(rows[i]) ?? "").ToString();
                 propValues.Add(propValue!);
             }
 

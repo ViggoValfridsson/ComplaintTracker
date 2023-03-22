@@ -8,7 +8,6 @@ internal class ComplaintSummaryModel
 {
     public ComplaintSummaryModel(ComplaintEntity complaintEntity)
     {
-        Id = complaintEntity.Id;
         SubmittedAt = complaintEntity.SubmittedAt;
         Title = complaintEntity.Title;
         Product = complaintEntity.Product.Name;
@@ -16,7 +15,6 @@ internal class ComplaintSummaryModel
         UserFullName = $"{complaintEntity.Customer.FirstName} {complaintEntity.Customer.LastName}";
     }
 
-    public Guid Id { get; set; }
     public DateTime SubmittedAt { get; set; } 
     public string Title { get; set; } = null!;
     public string Product { get; set; } = null!;

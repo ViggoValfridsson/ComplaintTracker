@@ -1,7 +1,11 @@
-﻿namespace Data_Storage_Submission.Services.Menus;
+﻿using Data_Storage_Submission.Models;
+
+namespace Data_Storage_Submission.Services.Menus;
 
 internal class MainMenuService
 {
+    private readonly ComplaintService _complaintService = new();
+    
     public async Task DisplayMainMenu()
     {
         var isRunning = true;
@@ -9,31 +13,32 @@ internal class MainMenuService
         while (isRunning)
         {
             Console.Clear();
-            Console.WriteLine("Please select an option:\n");
-            Console.WriteLine("1. Complaints");
-            Console.WriteLine("2. Comments");
-            Console.WriteLine("3. Quit\n");
+            Console.WriteLine("Loading...");
 
-            var input = Console.ReadKey(true);
+            var complaints = await _complaintService.GetAllAsync();
 
-            switch (input.KeyChar)
+            Console.Clear();
+
+            if (complaints.Count() <= 0)
             {
-                case '1':
-                    var complaintMenuService = new ComplaintsMenuService();
-                    await complaintMenuService.DisplayOptionsMenu();
-                    break;
-                case '2':
-                    var commentMenuService = new CommentsMenuService();
-                    await commentMenuService.DisplayOptionsMenu();
-                    break;
-                case '3':
-                    isRunning = false;
-                    break;
-                default:
-                    Console.WriteLine("Invalid option, press enter to try again.");
-                    Console.ReadLine();
-                    break;
+                Console.WriteLine("No complaints found.");
             }
+            else
+            {
+                var displayTableService = new DisplayTableService<ComplaintSummaryModel>();
+                var complaintSummaries = new List<ComplaintSummaryModel>();
+
+                foreach (var complaint in complaints)
+                {
+                    var complaintSummary = new ComplaintSummaryModel(complaint);
+                    complaintSummaries.Add(complaintSummary);
+                }
+
+                displayTableService.DisplayTable(complaintSummaries);
+            }
+
+            Console.WriteLine("\nPress enter to go back:");
+            Console.ReadLine();
         }
     }
 }
