@@ -125,7 +125,7 @@ internal class CommentsMenuService
 
         Console.Clear();
 
-        if (comments == null)
+        if (comments.Count() <= 0)
         {
             Console.WriteLine("No complaints found.");
         }
