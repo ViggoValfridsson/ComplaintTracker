@@ -12,6 +12,7 @@ internal class InitializeDataService
     {
         Console.WriteLine("Loading...");
         await InitializeAddresses();
+        await InitializeDepartments();
     }
 
     private async Task InitializeAddresses()
@@ -45,5 +46,10 @@ internal class InitializeDataService
                 await _addressService.SaveAsync(address);
             }
         }
+    }
+
+    private async Task InitializeDepartments ()
+    {
+
     }
 }
