@@ -1,21 +1,18 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Query;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace Data_Storage_Submission.Services.Menus;
 
 internal class ComplaintsMenuService
 {
     private readonly ComplaintService _complaintService = new();
+    private readonly CommentsMenuService _commentMenuService = new();
 
     public async Task DisplayComplaintsMenu()
     {
-        var isRunning = true;
+        var inComplaintsMenu = true;
 
-        while (isRunning)
+        while (inComplaintsMenu)
         {
             Console.Clear();
             Console.WriteLine("Loading...");
@@ -47,7 +44,7 @@ internal class ComplaintsMenuService
             Console.WriteLine("new".PadRight(25) + "Add new complaint");
             Console.WriteLine("exit".PadRight(25) + "Return to main menu");
 
-            var input = Console.ReadLine();
+            var input = Console.ReadLine()!.ToLower();
 
             if (input!.Contains("open"))
             {
@@ -68,32 +65,64 @@ internal class ComplaintsMenuService
                     continue;
                 }
 
-                DisplayComplaintOptions(choosenComplaint);
-            }
-            else if (input == "new")
-            {
-                await Console.Out.WriteLineAsync("new");
-            }
-            else if (input == "exit")
-            {
-                await Console.Out.WriteLineAsync("exit");
+                await DisplayComplaintOptions(choosenComplaint);
             }
             else
             {
-                await Console.Out.WriteLineAsync("else");
+                switch (input)
+                {
+                    case "new":
+                        Console.WriteLine("new");
+                        //glöm inte try catchen för argument exception
+                        break;
+                    case "exit":
+                        inComplaintsMenu = false;
+                        break;
+                    default:
+                        Console.WriteLine("Not a valid command, press enter to try again");
+                        Console.ReadLine();
+                        break;
+                }
             }
-
         }
     }
-    public void DisplayComplaintOptions(ComplaintEntity complaint)
+    public async Task DisplayComplaintOptions(ComplaintEntity complaint)
     {
-        PrintDetailedComplaint(complaint);
-        Console.WriteLine("\nCommands:");
-        Console.WriteLine("status <number>".PadRight(25) + "Change status. 1: Not started | 2: Under investigation | 3. Closed");
-        Console.WriteLine("comment".PadRight(25) + "Create a new comment.");
-        Console.WriteLine("exit".PadRight(25) + "Go back to complaints menu.");
+        bool inComplaintOptions = true;
 
-        Console.ReadLine();
+        while (inComplaintOptions)
+        {
+            Console.Clear();
+            PrintDetailedComplaint(complaint);
+            Console.WriteLine("\nCommands:");
+            Console.WriteLine("status <number>".PadRight(25) + "Change status. 1: Not started | 2: Under investigation | 3. Closed");
+            Console.WriteLine("comment".PadRight(25) + "Create a new comment.");
+            Console.WriteLine("exit".PadRight(25) + "Go back to complaints menu.");
+
+            var input = Console.ReadLine()!.ToLower();
+
+            switch (input)
+            {
+                case "status 1":
+                case "status 2":
+                case "status 3":
+                    var statusId = new string(input.Where(c => char.IsDigit(c)).ToArray());
+                    await _complaintService.ChangeStatusAsync(complaint.Id, Convert.ToInt32(statusId));
+                    inComplaintOptions = false;
+                    break;
+                case "comment":
+                    await _commentMenuService.CreateComment(complaint.Id);
+                    inComplaintOptions = false;
+                    break;
+                case "exit":
+                    inComplaintOptions = false;
+                    break;
+                default:
+                    Console.WriteLine("Not a valid command, press enter to try again");
+                    Console.ReadLine();
+                    break;
+            }
+        }
     }
 
     public void PrintDetailedComplaint(ComplaintEntity complaint)
@@ -126,7 +155,7 @@ internal class ComplaintsMenuService
                     Console.WriteLine($"{indentation}{indentation}Descripion: {comments[i].Description}");
                     Console.WriteLine($"{indentation}{indentation}Posted at: {comments[i].CreatedAt}");
                     Console.WriteLine($"{indentation}{indentation}Created by: {comments[i].Employee.FirstName} {comments[i].Employee.LastName}");
-                    
+
 
                     if (i == complaint.Comments.Count() - 1)
                         Console.WriteLine($"{indentation}}}");

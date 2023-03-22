@@ -18,9 +18,9 @@ internal class MainMenuService
             Console.WriteLine("complaints".PadRight(25) + "View and modify complaints");
             Console.WriteLine("exit".PadRight(25) + "Close application");
 
-            var input = Console.ReadLine();
+            var input = Console.ReadLine()!.ToLower();
 
-            switch (input!.ToLower())
+            switch (input)
             {
                 case "complaints": 
                     await _complaintsMenuService.DisplayComplaintsMenu();
