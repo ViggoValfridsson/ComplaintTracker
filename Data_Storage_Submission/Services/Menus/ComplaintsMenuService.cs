@@ -1,5 +1,6 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
+using System.Runtime.InteropServices;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -7,6 +8,8 @@ internal class ComplaintsMenuService
 {
     private readonly ComplaintService _complaintService = new();
     private readonly CommentsMenuService _commentMenuService = new();
+    private readonly ProductService _productService = new();
+    private readonly CustomerService _customerService = new();
 
     public async Task DisplayComplaintsMenu()
     {
@@ -72,13 +75,13 @@ internal class ComplaintsMenuService
                 switch (input)
                 {
                     case "new":
-                        Console.WriteLine("new");
-                        //glöm inte try catchen för argument exception
+                        await DisplayComplaintCreateation();
                         break;
                     case "exit":
                         inComplaintsMenu = false;
                         break;
                     default:
+                        Console.Clear();
                         Console.WriteLine("Not a valid command, press enter to try again");
                         Console.ReadLine();
                         break;
@@ -118,6 +121,7 @@ internal class ComplaintsMenuService
                     inComplaintOptions = false;
                     break;
                 default:
+                    Console.Clear();
                     Console.WriteLine("Not a valid command, press enter to try again");
                     Console.ReadLine();
                     break;
@@ -125,7 +129,142 @@ internal class ComplaintsMenuService
         }
     }
 
-    public void PrintDetailedComplaint(ComplaintEntity complaint)
+    public async Task DisplayComplaintCreateation()
+    {
+        var complaint = new ComplaintEntity();
+
+        Console.Clear();
+        Console.WriteLine("Please fill in the form to create a complaint.");
+        Console.WriteLine("Title: ");
+        complaint.Title = Console.ReadLine()!;
+        Console.WriteLine("Description: ");
+        complaint.Description = Console.ReadLine()!;
+
+        try
+        {
+            complaint.ProductId = await ChooseExistingProduct();
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Clear();
+            Console.WriteLine(ex.Message + ". Press enter to try again");
+            Console.ReadLine();
+            return;
+        }
+
+        Console.Clear();
+        Console.WriteLine("Do you wish to connect the complaint to an existing customer or a new one?");
+        Console.WriteLine("\nCommands:");
+        Console.WriteLine("existing".PadRight(25) + "Pick an already existing customer.");
+        Console.WriteLine("new".PadRight(25) + "Create a new customer and connect complaint to them.");
+        var customerType = Console.ReadLine()!.ToLower();
+
+        switch (customerType)
+        {
+            case "existing":
+                try
+                {
+                    complaint.CustomerId = await ChooseExistingCustomer();
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.Clear();
+                    Console.WriteLine(ex.Message + ". Press enter to try again");
+                    Console.ReadLine();
+                    return;
+                }
+                break;
+            case "new":
+                //Add option to create new user with case.
+                break;
+            default:
+                Console.Clear();
+                Console.WriteLine("Not a valid command, press enter to try again");
+                Console.ReadLine();
+                return;
+        }
+
+        try
+        {
+            Console.WriteLine("Loading...");
+            complaint = await _complaintService.SaveAsync(complaint);
+            Console.Clear();
+            Console.WriteLine("Successfully added complaint");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Clear();
+            Console.WriteLine(ex.Message + "\nPress enter to go back.");
+        }
+        catch
+        {
+            Console.Clear();
+            Console.WriteLine("Something went wrong when trying to save your comment. Make sure that you entered valid information and try again.");
+            Console.WriteLine("Press enter to go back.");
+        }
+
+        Console.ReadLine();
+    }
+
+
+    private async Task<int> ChooseExistingProduct()
+    {
+        var products = await _productService.GetAllAsync();
+        var productTableService = new DisplayTableService<ProductSummaryModel>();
+        var productSummaries = new List<ProductSummaryModel>();
+
+        foreach (var product in products)
+        {
+            var productSummary = new ProductSummaryModel(product);
+            productSummaries.Add(productSummary);
+        }
+
+        Console.Clear();
+        productTableService.DisplayTable(productSummaries);
+        Console.WriteLine("\nChoose the product your complaint is refering to. For example write \"1\" for row one.");
+        try
+        {
+            var input = Console.ReadLine();
+            var productRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
+            var product = products.ToList()[Convert.ToInt32(productRow) - 1];
+            return product.Id;
+        }
+        catch
+        {
+            throw new ArgumentException("Not a valid product");
+        }
+    }
+
+    private async Task<Guid> ChooseExistingCustomer()
+    {
+        var customers = await _customerService.GetAllAsync();
+        var customerTableService = new DisplayTableService<CustomerSummaryModel>();
+        var customerSummaries = new List<CustomerSummaryModel>();
+
+        foreach (var customer in customers)
+        {
+            var customerSummary = new CustomerSummaryModel(customer);
+            customerSummaries.Add(customerSummary);
+        }
+
+        Console.Clear();
+        customerTableService.DisplayTable(customerSummaries);
+
+        Console.WriteLine("\nChoose the product your complaint is refering to. For example write \"1\" for row one.");
+        try
+        {
+            var input = Console.ReadLine();
+            var customerRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
+            var customer = customers.ToList()[Convert.ToInt32(customerRow) - 1];
+            return customer.Id;
+        }
+        catch
+        {
+            throw new ArgumentException("Not a valid product");
+        }
+    }
+
+    private void PrintDetailedComplaint(ComplaintEntity complaint)
     {
         if (complaint == null)
         {

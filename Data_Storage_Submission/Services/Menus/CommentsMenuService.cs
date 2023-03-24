@@ -23,6 +23,12 @@ internal class CommentsMenuService
             var employeeSummaries = new List<EmployeeSummaryModel>();
             var comment = new CommentEntity();
 
+            foreach (var employee in employees)
+            {
+                var employeeSummary = new EmployeeSummaryModel(employee);
+                employeeSummaries.Add(employeeSummary);
+            }
+
             Console.Clear();
             Console.WriteLine("Please fill in the form to create a comment.");
             comment.ComplaintId = complaintId;
@@ -32,18 +38,12 @@ internal class CommentsMenuService
             comment.Description = Console.ReadLine()!;
 
             Console.WriteLine("Who is writing? Write the row number for matching the employee. Example command: \"1\"");
-            foreach (var employee in employees)
-            {
-                var employeeSummary = new EmployeeSummaryModel(employee);
-                employeeSummaries.Add(employeeSummary);
-            }
-
             _displayTableService.DisplayTable(employeeSummaries);
 
             try
             {
                 var input = Console.ReadLine();
-                var employeeRow = new string(input.Where(c => char.IsDigit(c)).ToArray());
+                var employeeRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
                 var employee = employees.ToList()[Convert.ToInt32(employeeRow) - 1];
                 comment.EmployeeId = employee.Id;
             }
