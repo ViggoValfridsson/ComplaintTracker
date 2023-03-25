@@ -180,13 +180,6 @@ internal class ComplaintsMenuService
                 {
                     complaint.CustomerId = await _customerMenu.CreateCustomer();
                 }
-                catch (ArgumentException ex)
-                {
-                    Console.Clear();
-                    Console.WriteLine(ex.Message + "\nPress enter to go back.");
-                    Console.ReadLine();
-                    return;
-                }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message + "\nPress enter to go back.");
