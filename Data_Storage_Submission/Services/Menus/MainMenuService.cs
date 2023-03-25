@@ -11,7 +11,7 @@ internal class MainMenuService
     {
         bool inMainMenu = true;
 
-        while(inMainMenu)
+        while (inMainMenu)
         {
             Console.Clear();
             Console.WriteLine("Commands:\n");
@@ -25,8 +25,12 @@ internal class MainMenuService
 
             switch (input)
             {
-                case "complaints": 
+                case "complaints":
                     await _complaintsMenuService.DisplayComplaintsMenu();
+                    break;
+                case "products":
+                    break;
+                case "employees":
                     break;
                 case "exit":
                     inMainMenu = false;
