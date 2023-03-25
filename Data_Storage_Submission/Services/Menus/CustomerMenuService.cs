@@ -52,6 +52,19 @@ internal class CustomerMenuService
             Console.WriteLine("Successfully saved customer. Press enter to continue");
             Console.ReadLine();
         }
+        catch (ArgumentException)
+        {
+            Console.Clear();
+            customer = await _customerService.GetAsync(
+                x => x.LastName == customer.LastName &&
+                x.FirstName == customer.FirstName &&
+                x.Email == customer.Email &&
+                x.PhoneNumber == customer.PhoneNumber &&
+                x.AddressId == customer.AddressId);
+            Console.Clear();
+            Console.WriteLine("The customer already existed but was still connected to your complaint, press enter to continue.");
+            Console.ReadLine();
+        }
         catch
         {
             Console.Clear();

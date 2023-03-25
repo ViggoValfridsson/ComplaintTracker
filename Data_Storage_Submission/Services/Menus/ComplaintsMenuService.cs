@@ -203,6 +203,7 @@ internal class ComplaintsMenuService
 
         try
         {
+            Console.Clear();
             Console.WriteLine("Loading...");
             await _complaintService.SaveAsync(complaint);
             Console.Clear();
