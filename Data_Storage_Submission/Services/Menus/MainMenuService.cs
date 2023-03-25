@@ -1,11 +1,9 @@
-﻿using Data_Storage_Submission.Models;
-using Data_Storage_Submission.Models.Entities;
-
-namespace Data_Storage_Submission.Services.Menus;
+﻿namespace Data_Storage_Submission.Services.Menus;
 
 internal class MainMenuService
 {
     private readonly ComplaintsMenuService _complaintsMenuService = new();
+    private readonly ProductsMenuService _productsMenuService = new();
 
     public async Task DisplayMainMenu()
     {
@@ -29,6 +27,7 @@ internal class MainMenuService
                     await _complaintsMenuService.DisplayComplaintsMenu();
                     break;
                 case "products":
+                    await _productsMenuService.DisplayProductsMenu();
                     break;
                 case "employees":
                     break;

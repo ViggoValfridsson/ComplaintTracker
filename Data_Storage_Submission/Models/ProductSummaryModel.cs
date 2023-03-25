@@ -10,8 +10,16 @@ internal class ProductSummaryModel
     public ProductSummaryModel(ProductEntity productEntity)
     {
         Name = productEntity.Name;
-        Description = productEntity.Description;
         Manufacturer = productEntity.Manufacturer;
+
+        if (productEntity.Description.Length > 50)
+        {
+            Description = productEntity.Description.Substring(0, 47) + "...";
+        }
+        else
+        {
+            Description = productEntity.Description;
+        }
     }
 
     public string Name { get; set; } = null!;

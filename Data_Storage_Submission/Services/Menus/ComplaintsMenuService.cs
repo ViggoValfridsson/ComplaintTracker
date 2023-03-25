@@ -1,6 +1,5 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
-using System.Runtime.InteropServices;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -45,7 +44,7 @@ internal class ComplaintsMenuService
 
             Console.WriteLine("\nCommands:");
             Console.WriteLine("open <#>".PadRight(25) + "View complaint details. <#> = row number");
-            Console.WriteLine("d elete <#>".PadRight(25) + "Delete specific complaint. <#> = row number");
+            Console.WriteLine("delete <#>".PadRight(25) + "Delete specific complaint. <#> = row number");
             Console.WriteLine("new".PadRight(25) + "Add new complaint");
             Console.WriteLine("exit".PadRight(25) + "Return to main menu");
             Console.WriteLine();
@@ -80,7 +79,7 @@ internal class ComplaintsMenuService
                     try
                     {
                         await _complaintService.DeleteAsync(choosenComplaint.Id);
-                        Console.WriteLine($"Successfully deleted post on row {rowNumber}, press enter to go back.");
+                        Console.WriteLine($"Successfully deleted complaint on row {rowNumber}, press enter to go back.");
                         Console.ReadLine();
                     }
                     catch 
