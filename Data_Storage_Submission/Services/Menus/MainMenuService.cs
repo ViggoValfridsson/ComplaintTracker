@@ -17,6 +17,7 @@ internal class MainMenuService
             Console.WriteLine("Commands:\n");
             Console.WriteLine("complaints".PadRight(25) + "View and modify complaints");
             Console.WriteLine("exit".PadRight(25) + "Close application");
+            Console.WriteLine();
 
             var input = Console.ReadLine()!.ToLower();
 

@@ -48,6 +48,7 @@ internal class ComplaintsMenuService
             Console.WriteLine("d elete <#>".PadRight(25) + "Delete specific complaint. <#> = row number");
             Console.WriteLine("new".PadRight(25) + "Add new complaint");
             Console.WriteLine("exit".PadRight(25) + "Return to main menu");
+            Console.WriteLine();
 
             var input = Console.ReadLine()!.ToLower();
 
@@ -120,6 +121,7 @@ internal class ComplaintsMenuService
             Console.WriteLine("status <number>".PadRight(25) + "Change status. 1: Not started | 2: Under investigation | 3. Closed");
             Console.WriteLine("comment".PadRight(25) + "Create a new comment.");
             Console.WriteLine("exit".PadRight(25) + "Go back to complaints menu.");
+            Console.WriteLine();
 
             var input = Console.ReadLine()!.ToLower();
 
@@ -176,6 +178,7 @@ internal class ComplaintsMenuService
         Console.WriteLine("\nCommands:");
         Console.WriteLine("existing".PadRight(25) + "Pick an already existing customer.");
         Console.WriteLine("new".PadRight(25) + "Create a new customer and connect complaint to them.");
+        Console.WriteLine();
         var customerType = Console.ReadLine()!.ToLower();
 
         switch (customerType)
