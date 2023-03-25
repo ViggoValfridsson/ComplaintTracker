@@ -10,6 +10,7 @@ internal class ComplaintsMenuService
     private readonly CommentsMenuService _commentMenuService = new();
     private readonly ProductService _productService = new();
     private readonly CustomerService _customerService = new();
+    private readonly CustomerMenuService _customerMenu = new();
 
     public async Task DisplayComplaintsMenu()
     {
@@ -89,7 +90,7 @@ internal class ComplaintsMenuService
             }
         }
     }
-    public async Task DisplayComplaintOptions(ComplaintEntity complaint)
+    private async Task DisplayComplaintOptions(ComplaintEntity complaint)
     {
         bool inComplaintOptions = true;
 
@@ -129,7 +130,7 @@ internal class ComplaintsMenuService
         }
     }
 
-    public async Task DisplayComplaintCreateation()
+    private async Task DisplayComplaintCreateation()
     {
         var complaint = new ComplaintEntity();
 
@@ -175,7 +176,23 @@ internal class ComplaintsMenuService
                 }
                 break;
             case "new":
-                //Add option to create new user with case.
+                try
+                {
+                    complaint.CustomerId = await _customerMenu.CreateCustomer();
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.Clear();
+                    Console.WriteLine(ex.Message + "\nPress enter to go back.");
+                    Console.ReadLine();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message + "\nPress enter to go back.");
+                    Console.ReadLine();
+                    return;
+                }
                 break;
             default:
                 Console.Clear();
@@ -187,7 +204,7 @@ internal class ComplaintsMenuService
         try
         {
             Console.WriteLine("Loading...");
-            complaint = await _complaintService.SaveAsync(complaint);
+            await _complaintService.SaveAsync(complaint);
             Console.Clear();
             Console.WriteLine("Successfully added complaint");
         }

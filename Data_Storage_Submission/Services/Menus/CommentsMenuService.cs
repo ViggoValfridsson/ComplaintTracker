@@ -59,7 +59,7 @@ internal class CommentsMenuService
             try
             {
                 Console.WriteLine("Loading...");
-                comment = await _commentService.SaveAsync(comment);
+                await _commentService.SaveAsync(comment);
                 Console.Clear();
                 Console.WriteLine("Successfully added comment.");
             }
