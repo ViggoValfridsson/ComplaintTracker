@@ -1,5 +1,7 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -11,7 +13,7 @@ internal class ProductsMenuService
     {
         bool inProductsMenu = true;
 
-        while(inProductsMenu)
+        while (inProductsMenu)
         {
             Console.Clear();
             Console.WriteLine("Loading...");
@@ -22,7 +24,7 @@ internal class ProductsMenuService
 
             if (products.Count() <= 0)
             {
-                Console.WriteLine("No complaints found.");
+                Console.WriteLine("No products found.");
             }
             else
             {
@@ -83,6 +85,7 @@ internal class ProductsMenuService
                 switch (input)
                 {
                     case "new":
+                        await DisplayProductCreation();
                         break;
                     case "exit":
                         inProductsMenu = false;
@@ -95,5 +98,40 @@ internal class ProductsMenuService
                 }
             }
         }
+    }
+
+    private async Task DisplayProductCreation()
+    {
+        var product = new ProductEntity();
+        Console.Clear();
+        Console.WriteLine("Please fill in the form to add a product.");
+        Console.WriteLine("Product name:");
+        product.Name = Console.ReadLine()!;
+        Console.WriteLine("Description");
+        product.Description = Console.ReadLine()!;
+        Console.WriteLine("Manufacturer: ");
+        product.Manufacturer = Console.ReadLine()!;
+
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("Loading...");
+            await _productService.SaveAsync(product);
+            Console.Clear();
+            Console.WriteLine("Successfully added product!");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Clear();
+            Console.WriteLine(ex.Message + "\nPress enter to go back.");
+        }
+        catch
+        {
+            Console.Clear();
+            Console.WriteLine("Something went wrong when trying to save the product. Make sure that you entered valid information and try again.");
+            Console.WriteLine("Press enter to go back.");
+        }
+
+        Console.ReadLine();
     }
 }
