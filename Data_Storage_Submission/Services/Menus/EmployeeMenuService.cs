@@ -135,19 +135,27 @@ internal class EmployeeMenuService
                     Console.ReadLine();
                     return;
                 }
+                catch (Exception ex)
+                {
+                    Console.Clear();
+                    Console.WriteLine(ex.Message + ". Press enter to try again");
+                    Console.ReadLine();
+                    return;
+                }
                 break;
             case "new":
-                //try
-                //{
-                //    complaint.CustomerId = await _customerMenu.CreateCustomer();
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine(ex.Message + "\nPress enter to go back.");
-                //    Console.ReadLine();
-                //    return;
-                //}
-                //break;
+                try
+                {
+                    employee.DepartmentId = await CreateDepartment();
+                }
+                catch 
+                {
+                    Console.Clear();
+                    Console.WriteLine("Something went wrong when saving the department. Make sure you entered valid information and try again.");
+                    Console.ReadLine();
+                    return;
+                }
+                break;
             default:
                 Console.Clear();
                 Console.WriteLine("Not a valid command, press enter to try again");
@@ -184,7 +192,7 @@ internal class EmployeeMenuService
         var departmentTableService = new DisplayTableService<DepartmentSummaryModel>();
         var departmentSummaries = new List<DepartmentSummaryModel>();
 
-        foreach(var department in departments)
+        foreach (var department in departments)
         {
             var departmentSummary = new DepartmentSummaryModel(department);
             departmentSummaries.Add(departmentSummary);
@@ -193,6 +201,7 @@ internal class EmployeeMenuService
         Console.Clear();
         departmentTableService.DisplayTable(departmentSummaries);
         Console.WriteLine("\nChoose the department you wish to connect the employee to. For example write \"1\" for row one (not id).");
+
         try
         {
             var input = Console.ReadLine();
@@ -204,5 +213,26 @@ internal class EmployeeMenuService
         {
             throw new ArgumentException("Not a valid department");
         }
+    }
+
+    public async Task<int> CreateDepartment()
+    {
+        var department = new DepartmentEntity();
+
+        Console.Clear();
+        Console.WriteLine("Please fill in the form to create a department.");
+        Console.WriteLine("Department name:");
+        department.Name = Console.ReadLine()!;
+
+        Console.Clear();
+        Console.WriteLine("Loading...");
+
+        department = await _departmentService.SaveAsync(department);
+        
+        Console.Clear();
+        Console.WriteLine("Successfully added department.");
+        Console.ReadLine();
+
+        return department.Id;
     }
 }

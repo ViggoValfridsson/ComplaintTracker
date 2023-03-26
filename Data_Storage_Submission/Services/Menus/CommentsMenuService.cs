@@ -34,7 +34,7 @@ internal class CommentsMenuService
             Console.WriteLine("Description: ");
             comment.Description = Console.ReadLine()!;
 
-            Console.WriteLine("Who is writing? Write the row number for matching the employee. Example command: \"1\"");
+            Console.WriteLine("Who is writing? Write the row number matching the employee. Example command: \"1\"");
             _displayTableService.DisplayTable(employeeSummaries);
 
             try
