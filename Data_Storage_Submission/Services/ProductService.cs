@@ -26,4 +26,10 @@ internal class ProductService : GenericServices<ProductEntity>
 
         throw new ArgumentException("Product already exists in database.");
     }
+
+    public async Task DeleteAsync(ProductEntity item)
+    {
+        _context.Remove(item);
+        await _context.SaveChangesAsync();
+    }
 }
