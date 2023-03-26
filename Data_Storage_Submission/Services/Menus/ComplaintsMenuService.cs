@@ -24,7 +24,7 @@ internal class ComplaintsMenuService
 
             Console.Clear();
 
-            if (complaints.Count() <= 0)
+            if (complaints == null)
             {
                 Console.WriteLine("No complaints found.");
             }
@@ -60,7 +60,7 @@ internal class ComplaintsMenuService
 
                 try
                 {
-                    Guid complaintId = (complaints.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
+                    Guid complaintId = (complaints!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenComplaint = await _complaintService.GetAsync(x => x.Id == complaintId);
                 }
                 catch

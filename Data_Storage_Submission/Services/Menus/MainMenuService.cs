@@ -4,6 +4,7 @@ internal class MainMenuService
 {
     private readonly ComplaintsMenuService _complaintsMenuService = new();
     private readonly ProductsMenuService _productsMenuService = new();
+    private readonly EmployeeMenuService _employeeMenuService = new();
 
     public async Task DisplayMainMenu()
     {
@@ -30,6 +31,7 @@ internal class MainMenuService
                     await _productsMenuService.DisplayProductsMenu();
                     break;
                 case "employees":
+                    await  _employeeMenuService.DisplayEmployeeMenu();
                     break;
                 case "exit":
                     inMainMenu = false;

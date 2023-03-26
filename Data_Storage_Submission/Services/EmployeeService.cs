@@ -35,4 +35,10 @@ internal class EmployeeService : GenericServices<EmployeeEntity>
 
         throw new ArgumentException("Employee already exists in database.");
     }
+
+    public async Task DeleteAsync(EmployeeEntity item)
+    {
+        _context.Remove(item);
+        await _context.SaveChangesAsync();
+    }
 }

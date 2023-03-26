@@ -22,7 +22,7 @@ internal class ProductsMenuService
 
             Console.Clear();
 
-            if (products.Count() <= 0)
+            if (products == null)
             {
                 Console.WriteLine("No products found.");
             }
@@ -57,7 +57,7 @@ internal class ProductsMenuService
 
                 try
                 {
-                    int productId = (products.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
+                    int productId = (products!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenProduct = await _productService.GetAsync(x => x.Id == productId);
                 }
                 catch
