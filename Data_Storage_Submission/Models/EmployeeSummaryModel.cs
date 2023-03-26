@@ -10,9 +10,11 @@ internal class EmployeeSummaryModel
     {
         FirstName = employee.FirstName;
         LastName = employee.LastName;
+        Department = employee.Department.Name;
     }
 
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
+    public string Department { get; set; } = null!;
 
 }

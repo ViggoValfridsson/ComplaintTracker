@@ -237,7 +237,6 @@ internal class ComplaintsMenuService
         Console.ReadLine();
     }
 
-
     private async Task<int> ChooseExistingProduct()
     {
         var products = await _productService.GetAllAsync();

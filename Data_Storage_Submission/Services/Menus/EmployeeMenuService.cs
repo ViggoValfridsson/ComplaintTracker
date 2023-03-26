@@ -1,11 +1,14 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Storage_Submission.Services.Menus;
 
 internal class EmployeeMenuService
 {
     private readonly EmployeeService _employeeService = new();
+    private readonly DepartmentService _departmentService = new();
 
     public async Task DisplayEmployeeMenu()
     {
@@ -98,5 +101,108 @@ internal class EmployeeMenuService
         }
     }
 
-    public async Task DisplayEmployeeCreation() { }
+    public async Task DisplayEmployeeCreation()
+    {
+        var employee = new EmployeeEntity();
+
+        Console.Clear();
+        Console.WriteLine("Please fill in the form to add a new employee.");
+        Console.WriteLine("First name:");
+        employee.FirstName = Console.ReadLine()!;
+        Console.WriteLine("Last name");
+        employee.LastName = Console.ReadLine()!;
+
+        Console.Clear();
+        Console.WriteLine("Do you wish to connect the complaint to an existing department or a new one?");
+        Console.WriteLine("\nCommands:");
+        Console.WriteLine("existing".PadRight(25) + "Pick an already existing department.");
+        Console.WriteLine("new".PadRight(25) + "Create a new department and connect employee to it.");
+        Console.WriteLine();
+
+        var departmentType = Console.ReadLine()!.ToLower();
+
+        switch (departmentType)
+        {
+            case "existing":
+                try
+                {
+                    employee.DepartmentId = await ChooseExistingDepartment();
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.Clear();
+                    Console.WriteLine(ex.Message + ". Press enter to try again");
+                    Console.ReadLine();
+                    return;
+                }
+                break;
+            case "new":
+                //try
+                //{
+                //    complaint.CustomerId = await _customerMenu.CreateCustomer();
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine(ex.Message + "\nPress enter to go back.");
+                //    Console.ReadLine();
+                //    return;
+                //}
+                //break;
+            default:
+                Console.Clear();
+                Console.WriteLine("Not a valid command, press enter to try again");
+                Console.ReadLine();
+                return;
+        }
+
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("Loading...");
+            await _employeeService.SaveAsync(employee);
+            Console.Clear();
+            Console.WriteLine("Successfully added employee");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Clear();
+            Console.WriteLine(ex.Message + "\nPress enter to go back.");
+        }
+        catch
+        {
+            Console.Clear();
+            Console.WriteLine("Something went wrong when trying to add employee. Make sure that you entered valid information and try again.");
+            Console.WriteLine("Press enter to go back.");
+        }
+
+        Console.ReadLine();
+    }
+
+    public async Task<int> ChooseExistingDepartment()
+    {
+        var departments = await _departmentService.GetAllAsync();
+        var departmentTableService = new DisplayTableService<DepartmentSummaryModel>();
+        var departmentSummaries = new List<DepartmentSummaryModel>();
+
+        foreach(var department in departments)
+        {
+            var departmentSummary = new DepartmentSummaryModel(department);
+            departmentSummaries.Add(departmentSummary);
+        }
+
+        Console.Clear();
+        departmentTableService.DisplayTable(departmentSummaries);
+        Console.WriteLine("\nChoose the department you wish to connect the employee to. For example write \"1\" for row one (not id).");
+        try
+        {
+            var input = Console.ReadLine();
+            var departmentRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
+            var department = departments.ToList()[Convert.ToInt32(departmentRow) - 1];
+            return department.Id;
+        }
+        catch
+        {
+            throw new ArgumentException("Not a valid department");
+        }
+    }
 }
