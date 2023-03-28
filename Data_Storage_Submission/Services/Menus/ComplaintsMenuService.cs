@@ -1,5 +1,6 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
+using System.Data.Common;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -85,7 +86,7 @@ internal class ComplaintsMenuService
                         Console.WriteLine($"Successfully deleted complaint on row {rowNumber}, press enter to go back.");
                         Console.ReadLine();
                     }
-                    catch 
+                    catch
                     {
                         Console.WriteLine("Something went wrong when deleting, please try again.");
                         Console.ReadLine();
@@ -168,7 +169,7 @@ internal class ComplaintsMenuService
         {
             complaint.ProductId = await ChooseExistingProduct();
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             Console.Clear();
             Console.WriteLine(ex.Message + ". Press enter to try again");
@@ -193,8 +194,16 @@ internal class ComplaintsMenuService
                 }
                 catch (ArgumentException ex)
                 {
+                    // Catches duplicate entries
                     Console.Clear();
                     Console.WriteLine(ex.Message + ". Press enter to try again");
+                    Console.ReadLine();
+                    return;
+                }
+                catch
+                {
+                    Console.Clear();
+                    Console.WriteLine("Make sure that there are customers in the database and try again.");
                     Console.ReadLine();
                     return;
                 }
@@ -244,6 +253,12 @@ internal class ComplaintsMenuService
     private async Task<int> ChooseExistingProduct()
     {
         var products = await _productService.GetAllAsync();
+
+        if (products.Count() < 1)
+        {
+            throw new Exception("No products found. Press enter to return.");
+        }
+
         var productTableService = new DisplayTableService<ProductSummaryModel>();
         var productSummaries = new List<ProductSummaryModel>();
 
@@ -255,6 +270,7 @@ internal class ComplaintsMenuService
         }
 
         Console.Clear();
+
         productTableService.DisplayTable(productSummaries);
 
         Console.WriteLine("\nChoose the product your complaint is refering to. For example write \"1\" for row one.");
@@ -275,6 +291,12 @@ internal class ComplaintsMenuService
     private async Task<Guid> ChooseExistingCustomer()
     {
         var customers = await _customerService.GetAllAsync();
+
+        if (customers.Count() < 1)
+        {
+            throw new Exception("No customers found. Press enter to return.");
+        }
+
         var customerTableService = new DisplayTableService<CustomerSummaryModel>();
         var customerSummaries = new List<CustomerSummaryModel>();
 
