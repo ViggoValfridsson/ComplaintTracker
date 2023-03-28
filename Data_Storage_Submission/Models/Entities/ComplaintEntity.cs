@@ -12,7 +12,8 @@ internal class ComplaintEntity
     public string Description { get; set; } = null!;
     public Guid CustomerId { get; set; }
     public int ProductId { get; set; }
-    public int StatusTypeId { get; set; } = 1;
+    //StatusTypeId 1 is "Not started"
+    public int StatusTypeId { get; set; } = 1; 
     public CustomerEntity Customer { get; set; } = null!;
     public ProductEntity Product { get; set; } = null!;
     public StatusTypeEntity StatusType { get; set; } = null!;

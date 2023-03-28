@@ -35,6 +35,7 @@ internal class CustomerMenuService
         }
         catch (ArgumentException)
         {
+            // Catches if the address already exists and instead of creating a new address it gets the existing one.
             address = await _addressService.GetAsync(x => x.City == address.City && x.PostalCode == address.PostalCode && x.Street == address.Street);
         }
         catch
@@ -54,6 +55,7 @@ internal class CustomerMenuService
         }
         catch (ArgumentException)
         {
+            // If the customer already exists it gets caught here and instead of failing it just fetches the existing customer and connect it to complaint.
             Console.Clear();
             customer = await _customerService.GetAsync(
                 x => x.LastName == customer.LastName &&

@@ -1,7 +1,4 @@
 ﻿using Data_Storage_Submission.Models.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace Data_Storage_Submission.Models;
 
@@ -12,6 +9,7 @@ internal class ProductSummaryModel
         Name = productEntity.Name;
         Manufacturer = productEntity.Manufacturer;
 
+        // Makes sure the description isn't too long which would prevent table view from displaying correctly.
         if (productEntity.Description.Length > 50)
         {
             Description = productEntity.Description.Substring(0, 47) + "...";
@@ -24,6 +22,5 @@ internal class ProductSummaryModel
 
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
-
     public string Manufacturer { get; set; } = null!;
 }

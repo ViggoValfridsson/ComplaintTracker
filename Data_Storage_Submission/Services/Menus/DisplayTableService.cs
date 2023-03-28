@@ -2,7 +2,9 @@
 
 internal class DisplayTableService<T> where T : class
 {
-    private List<int> colWidths = new List<int> ();
+    // List of the character width of each column. This is used so that every row is the same width
+    private List<int> colWidths = new List<int>();
+
     public void DisplayTable(List<T> data)
     {
         CalculateColWidths(data);
@@ -12,6 +14,7 @@ internal class DisplayTableService<T> where T : class
 
     private void CalculateColWidths(List<T> data)
     {
+        // Checks all values and property name string lengths and takes the longest value and sets it as the column width
         foreach (var row in data)
         {
             var properties = row!.GetType().GetProperties();
@@ -41,12 +44,16 @@ internal class DisplayTableService<T> where T : class
             }
         }
 
-        colWidths.Insert(0, 3);
+        // Insert the width for the row number column
+        colWidths.Insert(0, 5);
     }
 
     private void PrintHeaders(T row)
     {
+        // Prints the property names as headers in the table.
         var properties = row!.GetType().GetProperties();
+
+        // Adds header for row number column
         var propList = new List<string>
         {
             "#"
@@ -56,15 +63,16 @@ internal class DisplayTableService<T> where T : class
         {
             propList.Add(property.Name);
         }
-        PrintLine(propList.Count);
 
+        PrintLine(propList.Count);
         PrintRow(propList);
     }
 
     private void PrintRows(List<T> rows)
     {
-        for (int i =0; i<rows.Count; i++) 
+        for (int i = 0; i < rows.Count; i++)
         {
+            // Initial data in list is the row number
             var propValues = new List<string>() { (i + 1).ToString() };
             var properties = rows[i].GetType().GetProperties();
 
@@ -82,6 +90,7 @@ internal class DisplayTableService<T> where T : class
     {
         for (int i = 0; i < values.Count; i++)
         {
+            // Pads the left of the string to make sure that the column is a consistent width
             Console.Write("|" + values[i].PadLeft(colWidths[i]));
         }
 
@@ -92,6 +101,7 @@ internal class DisplayTableService<T> where T : class
 
     private void PrintLine(int colAmount)
     {
+        // Creates a line to break off every row
         Console.Write("+");
         for (int i = 0; i < colAmount; i++)
         {

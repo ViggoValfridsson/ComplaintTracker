@@ -1,7 +1,5 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -23,7 +21,7 @@ internal class EmployeeMenuService
 
             Console.Clear();
 
-            if (employees == null)
+            if (employees.Count() < 1)
             {
                 Console.WriteLine("No employees found.");
             }
@@ -32,6 +30,7 @@ internal class EmployeeMenuService
                 var displayTableService = new DisplayTableService<EmployeeSummaryModel>();
                 var employeeSummaries = new List<EmployeeSummaryModel>();
 
+                // Converts from EmployeeEntity to EmployeeSummaryModel to make table view less cluttered
                 foreach (var employee in employees)
                 {
                     var employeeSummary = new EmployeeSummaryModel(employee);
@@ -51,6 +50,7 @@ internal class EmployeeMenuService
 
             if (input!.Contains("delete"))
             {
+                //Strips input of letters
                 var rowNumber = new string(input.Where(c => char.IsDigit(c)).ToArray());
                 EmployeeEntity choosenEmployee;
 
@@ -58,6 +58,7 @@ internal class EmployeeMenuService
 
                 try
                 {
+                    // Numeric input is used to index employee colletion
                     Guid employeeId = (employees!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenEmployee = await _employeeService.GetAsync(x => x.Id == employeeId);
                 }
@@ -101,7 +102,7 @@ internal class EmployeeMenuService
         }
     }
 
-    public async Task DisplayEmployeeCreation()
+    private async Task DisplayEmployeeCreation()
     {
         var employee = new EmployeeEntity();
 
@@ -130,6 +131,7 @@ internal class EmployeeMenuService
                 }
                 catch (ArgumentException ex)
                 {
+                    // Catches invalid input
                     Console.Clear();
                     Console.WriteLine(ex.Message + ". Press enter to try again");
                     Console.ReadLine();
@@ -186,9 +188,15 @@ internal class EmployeeMenuService
         Console.ReadLine();
     }
 
-    public async Task<int> ChooseExistingDepartment()
+    private async Task<int> ChooseExistingDepartment()
     {
         var departments = await _departmentService.GetAllAsync();
+
+        if (departments.Count() < 1)
+        {
+            throw new Exception("No existing departments found.");
+        }
+
         var departmentTableService = new DisplayTableService<DepartmentSummaryModel>();
         var departmentSummaries = new List<DepartmentSummaryModel>();
 
@@ -205,6 +213,7 @@ internal class EmployeeMenuService
         try
         {
             var input = Console.ReadLine();
+            // Strips input of non-numeric characters and uses it to index department
             var departmentRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
             var department = departments.ToList()[Convert.ToInt32(departmentRow) - 1];
             return department.Id;
@@ -215,7 +224,7 @@ internal class EmployeeMenuService
         }
     }
 
-    public async Task<int> CreateDepartment()
+    private async Task<int> CreateDepartment()
     {
         var department = new DepartmentEntity();
 

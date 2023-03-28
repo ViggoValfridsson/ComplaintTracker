@@ -20,6 +20,7 @@ internal class CommentsMenuService
             var employeeSummaries = new List<EmployeeSummaryModel>();
             var comment = new CommentEntity();
 
+            // Converts EmployeeEntites to EmployeeSummaryModels to prevent table from becoming too wide and filled with unnecessary information
             foreach (var employee in employees)
             {
                 var employeeSummary = new EmployeeSummaryModel(employee);
@@ -40,7 +41,9 @@ internal class CommentsMenuService
             try
             {
                 var input = Console.ReadLine();
+                // Remove all non-numeric characters from the string.
                 var employeeRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
+                // Uses the numeric string to index the list. The -1 subtraction is because arrays start at 0.
                 var employee = employees.ToList()[Convert.ToInt32(employeeRow) - 1];
                 comment.EmployeeId = employee.Id;
             }
@@ -60,6 +63,7 @@ internal class CommentsMenuService
                 Console.Clear();
                 Console.WriteLine("Successfully added comment.");
             }
+            // Catches the exception if you tried to add an already existing item.
             catch (ArgumentException ex)
             {
                 Console.Clear();

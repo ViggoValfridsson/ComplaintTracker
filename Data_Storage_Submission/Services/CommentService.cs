@@ -8,6 +8,7 @@ namespace Data_Storage_Submission.Services;
 internal class CommentService : GenericServices<CommentEntity>
 {
     private readonly DataContext _context = new();
+
     public override async Task<IEnumerable<CommentEntity>> GetAllAsync()
     {
         return await _context.Comments
