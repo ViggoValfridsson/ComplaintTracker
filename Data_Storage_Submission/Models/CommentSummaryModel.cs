@@ -1,6 +1,7 @@
 ﻿using Data_Storage_Submission.Models.Entities;
 
 namespace Data_Storage_Submission.Models;
+
 internal class CommentSummaryModel
 {
     public CommentSummaryModel(CommentEntity commentEntity)

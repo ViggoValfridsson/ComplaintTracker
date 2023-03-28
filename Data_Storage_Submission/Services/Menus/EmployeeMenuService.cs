@@ -1,7 +1,5 @@
 ﻿using Data_Storage_Submission.Models;
 using Data_Storage_Submission.Models.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Storage_Submission.Services.Menus;
 
@@ -101,7 +99,7 @@ internal class EmployeeMenuService
         }
     }
 
-    public async Task DisplayEmployeeCreation()
+    private async Task DisplayEmployeeCreation()
     {
         var employee = new EmployeeEntity();
 
@@ -186,7 +184,7 @@ internal class EmployeeMenuService
         Console.ReadLine();
     }
 
-    public async Task<int> ChooseExistingDepartment()
+    private async Task<int> ChooseExistingDepartment()
     {
         var departments = await _departmentService.GetAllAsync();
         var departmentTableService = new DisplayTableService<DepartmentSummaryModel>();
@@ -215,7 +213,7 @@ internal class EmployeeMenuService
         }
     }
 
-    public async Task<int> CreateDepartment()
+    private async Task<int> CreateDepartment()
     {
         var department = new DepartmentEntity();
 

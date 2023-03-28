@@ -8,6 +8,7 @@ namespace Data_Storage_Submission.Services;
 internal class ProductService : GenericServices<ProductEntity>
 {
     private readonly DataContext _context = new();
+
     public override async Task<ProductEntity> GetAsync(Expression<Func<ProductEntity, bool>> predicate)
     {
         var item = await _context.Products

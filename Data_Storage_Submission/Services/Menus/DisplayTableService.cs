@@ -3,6 +3,7 @@
 internal class DisplayTableService<T> where T : class
 {
     private List<int> colWidths = new List<int> ();
+
     public void DisplayTable(List<T> data)
     {
         CalculateColWidths(data);

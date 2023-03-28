@@ -1,6 +1,5 @@
 ﻿using Data_Storage_Submission.Context;
 using Data_Storage_Submission.Models.Entities;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Data_Storage_Submission.Services.Initialization;
 
