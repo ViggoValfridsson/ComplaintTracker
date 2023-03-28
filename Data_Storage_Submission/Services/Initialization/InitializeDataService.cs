@@ -28,6 +28,7 @@ internal class InitializeDataService
         await InitializeComments();
     }
 
+    //This method is public since if you don't want to use the dummy data you may still wish to create the statuses.
     public async Task InitializeStatusTypes()
     {
         if (!_context.StatusTypes.Any())

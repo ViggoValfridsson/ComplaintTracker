@@ -9,6 +9,7 @@ internal class ProductSummaryModel
         Name = productEntity.Name;
         Manufacturer = productEntity.Manufacturer;
 
+        // Makes sure the description isn't too long which would prevent table view from displaying correctly.
         if (productEntity.Description.Length > 50)
         {
             Description = productEntity.Description.Substring(0, 47) + "...";

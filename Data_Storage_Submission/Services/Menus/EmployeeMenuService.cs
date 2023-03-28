@@ -21,7 +21,7 @@ internal class EmployeeMenuService
 
             Console.Clear();
 
-            if (employees == null)
+            if (employees.Count() < 1)
             {
                 Console.WriteLine("No employees found.");
             }
@@ -30,6 +30,7 @@ internal class EmployeeMenuService
                 var displayTableService = new DisplayTableService<EmployeeSummaryModel>();
                 var employeeSummaries = new List<EmployeeSummaryModel>();
 
+                // Converts from EmployeeEntity to EmployeeSummaryModel to make table view less cluttered
                 foreach (var employee in employees)
                 {
                     var employeeSummary = new EmployeeSummaryModel(employee);
@@ -49,6 +50,7 @@ internal class EmployeeMenuService
 
             if (input!.Contains("delete"))
             {
+                //Strips input of letters
                 var rowNumber = new string(input.Where(c => char.IsDigit(c)).ToArray());
                 EmployeeEntity choosenEmployee;
 
@@ -56,6 +58,7 @@ internal class EmployeeMenuService
 
                 try
                 {
+                    // Numeric input is used to index employee colletion
                     Guid employeeId = (employees!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenEmployee = await _employeeService.GetAsync(x => x.Id == employeeId);
                 }
@@ -128,6 +131,7 @@ internal class EmployeeMenuService
                 }
                 catch (ArgumentException ex)
                 {
+                    // Catches invalid input
                     Console.Clear();
                     Console.WriteLine(ex.Message + ". Press enter to try again");
                     Console.ReadLine();
@@ -203,6 +207,7 @@ internal class EmployeeMenuService
         try
         {
             var input = Console.ReadLine();
+            // Strips input of non-numeric characters and uses it to index department
             var departmentRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
             var department = departments.ToList()[Convert.ToInt32(departmentRow) - 1];
             return department.Id;

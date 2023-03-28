@@ -24,12 +24,13 @@ internal class ComplaintsMenuService
 
             Console.Clear();
 
-            if (complaints == null)
+            if (complaints.Count() < 1)
             {
                 Console.WriteLine("No complaints found.");
             }
             else
             {
+                // Converts to ComplaintSummaryModels to keep the table from becoming to wide and filled with unnecessary information
                 var displayTableService = new DisplayTableService<ComplaintSummaryModel>();
                 var complaintSummaries = new List<ComplaintSummaryModel>();
 
@@ -53,6 +54,7 @@ internal class ComplaintsMenuService
 
             if (input!.Contains("open") || input!.Contains("delete"))
             {
+                // Strips string of non-numeric characters
                 var rowNumber = new string(input.Where(c => char.IsDigit(c)).ToArray());
                 ComplaintEntity choosenComplaint;
 
@@ -60,6 +62,7 @@ internal class ComplaintsMenuService
 
                 try
                 {
+                    // Gets the complaint id by indexing the list using the numeric string. The subtraction of 1 is because collections start at 0.
                     Guid complaintId = (complaints!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenComplaint = await _complaintService.GetAsync(x => x.Id == complaintId);
                 }
@@ -129,6 +132,7 @@ internal class ComplaintsMenuService
                 case "status 1":
                 case "status 2":
                 case "status 3":
+                    //Strips the input of non-numeric characters and uses the id as an argument when updating status.
                     var statusId = new string(input.Where(c => char.IsDigit(c)).ToArray());
                     await _complaintService.ChangeStatusAsync(complaint.Id, Convert.ToInt32(statusId));
                     inComplaintOptions = false;
@@ -243,6 +247,7 @@ internal class ComplaintsMenuService
         var productTableService = new DisplayTableService<ProductSummaryModel>();
         var productSummaries = new List<ProductSummaryModel>();
 
+        // Converts ProductEntities to ProductSummaryModels to make sure table isn't to wide and filled with unnecessary information.
         foreach (var product in products)
         {
             var productSummary = new ProductSummaryModel(product);
@@ -251,10 +256,12 @@ internal class ComplaintsMenuService
 
         Console.Clear();
         productTableService.DisplayTable(productSummaries);
+
         Console.WriteLine("\nChoose the product your complaint is refering to. For example write \"1\" for row one.");
         try
         {
             var input = Console.ReadLine();
+            // Strips input of non-numeric characters and uses it to index products collection.
             var productRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
             var product = products.ToList()[Convert.ToInt32(productRow) - 1];
             return product.Id;
@@ -271,6 +278,7 @@ internal class ComplaintsMenuService
         var customerTableService = new DisplayTableService<CustomerSummaryModel>();
         var customerSummaries = new List<CustomerSummaryModel>();
 
+        // Converts CustomerEntities to CustomerSummaryModels to make sure table isn't to wide.
         foreach (var customer in customers)
         {
             var customerSummary = new CustomerSummaryModel(customer);
@@ -284,6 +292,7 @@ internal class ComplaintsMenuService
         try
         {
             var input = Console.ReadLine();
+            // Strips the input of non-numeric characters. This gets us the rownumber of the choosen customer. The row number is the same as the index + 1.
             var customerRow = new string(input!.Where(c => char.IsDigit(c)).ToArray());
             var customer = customers.ToList()[Convert.ToInt32(customerRow) - 1];
             return customer.Id;
@@ -310,9 +319,10 @@ internal class ComplaintsMenuService
             Console.WriteLine($"Status: {complaint.StatusType.StatusName}");
             Console.WriteLine($"Submitted at: {complaint.SubmittedAt}");
 
+            // Displays the comments in the style of a JSON array
             if (complaint.Comments.Count > 0)
             {
-                string indentation = new string(' ', 4);
+                var indentation = new string(' ', 4);
                 var comments = complaint.Comments.ToList();
                 Console.WriteLine("Comments: [");
 

@@ -20,7 +20,7 @@ internal class ProductsMenuService
 
             Console.Clear();
 
-            if (products == null)
+            if (products.Count() < 1)
             {
                 Console.WriteLine("No products found.");
             }
@@ -29,6 +29,7 @@ internal class ProductsMenuService
                 var displayTableService = new DisplayTableService<ProductSummaryModel>();
                 var productSummaries = new List<ProductSummaryModel>();
 
+                // Convert ProductEntites to ProductSummaryModels to prevent table from becoming to wide
                 foreach (var product in products)
                 {
                     var productsSummary = new ProductSummaryModel(product);
@@ -55,6 +56,7 @@ internal class ProductsMenuService
 
                 try
                 {
+                    // Uses input that has been stripped of non-numeric characters to index the collection
                     int productId = (products!.ToList()[Convert.ToInt32(rowNumber) - 1]).Id;
                     choosenProduct = await _productService.GetAsync(x => x.Id == productId);
                 }
@@ -120,6 +122,7 @@ internal class ProductsMenuService
         }
         catch (ArgumentException ex)
         {
+            // Catch for inputing already existing item
             Console.Clear();
             Console.WriteLine(ex.Message + "\nPress enter to go back.");
         }
