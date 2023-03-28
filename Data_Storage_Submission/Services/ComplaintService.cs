@@ -47,6 +47,8 @@ internal class ComplaintService : GenericServices<ComplaintEntity>
         var item = await GetAsync(x => x.Id == complaintId) ?? throw new ArgumentException("Could not find complaint.");
 
         item.StatusTypeId = statusTypeId;
+        
+        _context.Update(item);
         await _context.SaveChangesAsync();
 
         return item;
