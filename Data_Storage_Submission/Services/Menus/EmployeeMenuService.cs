@@ -191,6 +191,12 @@ internal class EmployeeMenuService
     private async Task<int> ChooseExistingDepartment()
     {
         var departments = await _departmentService.GetAllAsync();
+
+        if (departments.Count() < 1)
+        {
+            throw new Exception("No existing departments found.");
+        }
+
         var departmentTableService = new DisplayTableService<DepartmentSummaryModel>();
         var departmentSummaries = new List<DepartmentSummaryModel>();
 
