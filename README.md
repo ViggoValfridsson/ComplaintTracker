@@ -46,15 +46,15 @@ Here you can see the employee view. You can create new employees or delete exist
 
 There are quite a few ways to run the application. All of them will require you to install the [.NET 7 sdk](https://dotnet.microsoft.com/en-us/download/dotnet).
 
-### Method 1
+#### Method 1
 
 Simply navigate to the folder Data_Storage_Submission (the one containing the .csproj file) and run `dotnet run`.
 
-### Method 2 
+#### Method 2 
 
 Navigate to the same folder as in method 1. Run `dotnet build` and then navigate to ...\Data_Storage_Submission\bin\Debug\net7.0 and run the file called Data_Storage_Submission.exe.
 
-### Method 3
+#### Method 3
 
 Open the solution in Visual Studio and run it from there.
 
