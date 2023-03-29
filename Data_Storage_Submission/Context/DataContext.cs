@@ -17,7 +17,16 @@ internal class DataContext : DbContext
     {
         string workingDirectory = Environment.CurrentDirectory;
         string currentDirectory = Directory.GetParent(workingDirectory)!.Parent!.Parent!.FullName;
-        string dbDirectory = $"{currentDirectory}\\Context";
+        string dbDirectory;
+
+        if (workingDirectory.Contains("Data_Storage_Submission\\bin\\Debug\\net7.0"))
+        {
+            dbDirectory = $"{currentDirectory}\\Context";
+        }
+        else
+        {
+            dbDirectory = $"{workingDirectory}\\Context";
+        }
 
         SqlConnectionStringBuilder builder =
             new()
