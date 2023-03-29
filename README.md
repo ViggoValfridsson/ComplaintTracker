@@ -7,24 +7,38 @@ An Entity Framework Core / .NET application made for organizing product complain
 The app was created using a code-first approach. The app currently uses a local .mdf file but could easily be modified to utilize any Microsoft SQL Server. 
 The application contains quite a few views and allows you to perform different CRUD operations on the 8 different tables. 
 
-### Preview
+### **Main complaint view**
 
 ![Complaint main view screenshot](Screenshots/complaints.PNG)
 
 This is the main view of the customer complaints. It allows you to delete, create or open a detailed view of a complaint.
+<br/>
+<br/>
+
+### **Detailed complaint view**
 
 ![Detailed complaint view screenshot](Screenshots/detailed-complaint.PNG)
 
 From here you can create comments and change complaint statuses (not started, under investigation and closed). You can also view additional information that wasn't
 shown in the table in the main complaint view.
+<br/>
+<br/>
+
+### **Main product view**
 
 ![Main product view screenshot](Screenshots/products.PNG)
 
 This is the main products view, it allows you to view all products, delete products and create new ones.
+<br/>
+<br/>
+
+### **Main Employee view**
 
 ![Main employee view screenshot](Screenshots/employees.PNG)
 
 Here you can see the employee view. You can create new employees or delete existing ones.
+<br/>
+<br/>
 
 ## How to run the app
 
