@@ -7,6 +7,8 @@ An Entity Framework Core / .NET application made for organizing product complain
 The app was created using a code-first approach. The app currently uses a local .mdf file but could easily be modified to utilize any Microsoft SQL Server. 
 The application contains quite a few views and allows you to perform different CRUD operations on the 8 different tables. 
 
+If any of the tables are displaying incorrectly make sure your window is wide enough.
+
 ### **Main complaint view**
 
 ![Complaint main view screenshot](Screenshots/complaints.PNG)
