@@ -40,8 +40,8 @@ internal class ProductsMenuService
             }
 
             Console.WriteLine("\nCommands:");
-            Console.WriteLine("delete <#>".PadRight(25) + "Delete specific complaint. <#> = row number");
-            Console.WriteLine("new".PadRight(25) + "Add new complaint");
+            Console.WriteLine("delete <#>".PadRight(25) + "Delete specific product. <#> = row number");
+            Console.WriteLine("new".PadRight(25) + "Add new product");
             Console.WriteLine("exit".PadRight(25) + "Return to main menu");
             Console.WriteLine();
 
