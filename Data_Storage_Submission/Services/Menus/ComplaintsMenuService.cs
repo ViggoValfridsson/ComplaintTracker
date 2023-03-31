@@ -172,7 +172,7 @@ internal class ComplaintsMenuService
         catch (Exception ex)
         {
             Console.Clear();
-            Console.WriteLine(ex.Message + ". Press enter to try again");
+            Console.WriteLine(ex.Message);
             Console.ReadLine();
             return;
         }
@@ -196,7 +196,7 @@ internal class ComplaintsMenuService
                 {
                     // Catches duplicate entries
                     Console.Clear();
-                    Console.WriteLine(ex.Message + ". Press enter to try again");
+                    Console.WriteLine(ex.Message);
                     Console.ReadLine();
                     return;
                 }
