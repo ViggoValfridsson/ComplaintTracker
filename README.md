@@ -7,6 +7,8 @@ An Entity Framework Core / .NET application made for organizing product complain
 The app was created using a code-first approach. The app currently uses a local .mdf file but could easily be modified to utilize any Microsoft SQL Server. 
 The application contains quite a few views and allows you to perform different CRUD operations on the 8 different tables. 
 
+The repo contains a database with dummy data. If you wish to create your own database from the ground up check out the instructions on how to do this in the how to run section.
+
 If any of the tables are displaying incorrectly make sure your window is wide enough.
 
 ### **Main complaint view**
@@ -57,4 +59,8 @@ Navigate to the same folder as in method 1. Run `dotnet build` and then navigate
 #### Method 3
 
 Open the solution in Visual Studio and run it from there.
+
+### Creating a new database without dummy data
+
+Delete the original .mdf file (located in ComplaintTracker\Data_Storage_Submission\Context) and create a new one of the same name. Don't forget to open the package manager console and running `update-database`. In program.cs the method `initializeDataService.InitializeAll();` is called, this will populate the new database with the exact same data as the included database. To prevent this change `.InitializeAll()` to `.InitializeStatusTypes();`, this will only add the status types to your new database.
 
