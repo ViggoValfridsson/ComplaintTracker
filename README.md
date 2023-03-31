@@ -60,7 +60,7 @@ Navigate to the same folder as in method 1. Run `dotnet build` and then navigate
 
 Open the solution in Visual Studio and run it from there.
 
-### Creating a new database without dummy data
+#### Creating a new database without dummy data
 
 Delete the original .mdf file (located in ComplaintTracker\Data_Storage_Submission\Context) and create a new one of the same name. Don't forget to open the package manager console and running `update-database`. In program.cs the method `initializeDataService.InitializeAll();` is called, this will populate the new database with the exact same data as the included database. To prevent this change `.InitializeAll()` to `.InitializeStatusTypes();`, this will only add the status types to your new database. Then run it by performing either of the aforementioned methods.
 
