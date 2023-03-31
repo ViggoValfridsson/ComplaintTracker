@@ -17,10 +17,20 @@ internal class CommentsMenuService
             Console.WriteLine("Loading...");
 
             var employees = await _employeeService.GetAllAsync();
+
+            if (employees.Count() < 1)
+            {
+                Console.Clear();
+                Console.WriteLine("There are no employees in the database. Please add employees before trying to create a comment.");
+                Console.WriteLine("Press enter to return");
+                Console.ReadLine();
+                break;
+            }
+
             var employeeSummaries = new List<EmployeeSummaryModel>();
             var comment = new CommentEntity();
 
-            // Converts EmployeeEntites to EmployeeSummaryModels to prevent table from becoming too wide and filled with unnecessary information
+            // Converts EmployeeEntities to EmployeeSummaryModels to prevent table from becoming too wide and filled with unnecessary information
             foreach (var employee in employees)
             {
                 var employeeSummary = new EmployeeSummaryModel(employee);
