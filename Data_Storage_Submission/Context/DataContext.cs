@@ -32,7 +32,7 @@ internal class DataContext : DbContext
             new()
             {
                 ["Data Source"] = @"(LocalDB)\MSSQLLocalDB",
-                ["AttachDbFilename"] = @$"{dbDirectory}\submisson_db.mdf",
+                ["AttachDbFilename"] = @$"{dbDirectory}\submission_db.mdf",
                 ["integrated Security"] = true,
                 ["Connect Timeout"] = 30
             };
